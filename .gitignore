@@ -1,2 +1,2 @@
-/backend/venv/
-/.idea/
+/backend/venv/*
+/.idea/*
