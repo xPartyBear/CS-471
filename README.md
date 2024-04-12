@@ -1,4 +1,4 @@
-# CE471
+# CS-471
 
 No typescript
 Yes JSX
