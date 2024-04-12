@@ -27,3 +27,6 @@ NOTE: Make sure you are in the backend directory
 5. run ```python app.py```
 
 (NOTE): Will need to check if this works on other any other os i.e. Mac or Linux
+
+(NOTE): Whenever you add new libraries for python be sure to regenerate the requirements.txt file using this command:
+```py -m pip freeze > requirements.txt```
