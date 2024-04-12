@@ -20,7 +20,10 @@ How to setup the backend
 NOTE: Make sure you are in the backend directory
 1. Make sure you have python installed
 2. run venv\Scripts\activate
-3. run pip install
+3. run py -m pip install -r requirements.txt
 4. run python app.py
 
 (NOTE): Will need to check if this works on other any other os i.e. Mac or Linux
+
+(NOTE): Whenever you add new libraries for python be sure to regenerate the requirements.txt file using this command:
+py -m pip freeze > requirements.txt
