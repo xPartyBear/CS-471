@@ -28,5 +28,5 @@ NOTE: Make sure you are in the backend directory
 
 (NOTE): Will need to check if this works on other any other os i.e. Mac or Linux
 
-(NOTE): Whenever you add new libraries for python be sure to regenerate the requirements.txt file using this command: 
+(NOTE): Whenever you add new libraries for python be sure to regenerate the requirements.txt file using this command:
 ```pip freeze > requirements.txt```
