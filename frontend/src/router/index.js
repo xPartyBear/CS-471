@@ -10,6 +10,17 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/past-puzzles',
+      name: 'past-puzzles',
+      component: () => import('../views/PastPuzzlesView.vue'),
+    },
+    {
+      path: '/accounts',
+      name: 'accounts',
+      component: () => import('../views/AccountView.vue'),
+    },
+    /*
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -17,6 +28,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     }
+    */
   ]
 })
 
