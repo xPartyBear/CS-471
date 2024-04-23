@@ -33,7 +33,7 @@ import NavBar from './components/NavBar.vue'
     data() {
       return {
         output: '',
-        signUpEnabled: false;
+        signUpEnabled: false,
       }
     },
     methods: {
