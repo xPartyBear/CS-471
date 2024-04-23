@@ -1,7 +1,6 @@
 <script setup>
 import ping from '/services/ping.js'
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 </script>
 
