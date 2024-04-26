@@ -38,12 +38,14 @@
     .window {
         z-index: 2;
         width: 35%;
-        height: 35%;
+        height: 45%;
         background-color: lightgray;
         position: absolute;
         left: 30%;
         top: 30%;
         border-radius: 16px;
+        box-shadow: 0px 4px 4px 0px gray;
+        
 
     }
     .form {
