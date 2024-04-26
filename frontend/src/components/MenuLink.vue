@@ -33,9 +33,12 @@
         cursor: pointer;
     }
     .content {
-        display: inline-block;
+        position: relative;
         width:100%;
         height:64px;
+        float: right;
+        top: 35%;
+
     }
 
 </style>

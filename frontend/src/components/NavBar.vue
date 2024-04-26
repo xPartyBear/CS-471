@@ -8,10 +8,10 @@ import MenuLink from './MenuLink.vue'
     <div>
         <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
-                <MenuLink><RouterLink class="link" to="/">Home</RouterLink></MenuLink>
-                <MenuLink><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
-                <MenuLink><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
-                <MenuLink @click="displaySignUp()">
+                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Home</RouterLink></MenuLink>
+                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
+                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
+                <MenuLink icon="../../public/favicon.ico" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
             </div>
@@ -45,7 +45,7 @@ import MenuLink from './MenuLink.vue'
     }
 </script>
 
-<style>
+<style scopes>
     header {
         background-color: gray;
         float: left;
@@ -64,6 +64,8 @@ import MenuLink from './MenuLink.vue'
         user-select:none;
         color: black;
         margin: 0;
+        height: 100%;
     }
+
 
 </style>
