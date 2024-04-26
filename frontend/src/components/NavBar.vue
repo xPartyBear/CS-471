@@ -8,7 +8,7 @@ import MenuLink from './MenuLink.vue'
     <div>
         <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
-                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Home</RouterLink></MenuLink>
+                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
                 <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
                 <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
                 <MenuLink icon="../../public/favicon.ico" @click="displaySignUp()">
