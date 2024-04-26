@@ -17,9 +17,6 @@
                             <!--This is the interior content of the side bar-->
                             <slot></slot>
                         </div>
-                        <div class="footer">
-                            This is where you would sign up/ in
-                        </div>
                     </div>
                 </div>
         </transition>   

@@ -6,7 +6,7 @@ import MenuLink from './MenuLink.vue'
 
 <template>
     <div>
-        <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+name+ '!'">
+        <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
                 <MenuLink><RouterLink class="link" to="/">Home</RouterLink></MenuLink>
                 <MenuLink><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
@@ -38,7 +38,7 @@ import MenuLink from './MenuLink.vue'
             isSignedIn: () => {
 
             },
-            name: () => {
+            getName: () => {
                 return 'John Doe'
             },
         }
@@ -63,5 +63,7 @@ import MenuLink from './MenuLink.vue'
         text-decoration: none;
         user-select:none;
         color: black;
+        margin: 0;
     }
+
 </style>
