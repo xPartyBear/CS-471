@@ -32,11 +32,11 @@
         width: 100%;
         height: 100%;
 
-        z-index: 5;
+        z-index: 2;
 
     }
     .window {
-        z-index: 6;
+        z-index: 2;
         width: 35%;
         height: 35%;
         background-color: lightgray;
