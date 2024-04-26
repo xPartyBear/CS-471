@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-CORS(app,resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 @app.route("/")
@@ -19,8 +19,8 @@ def ping():
     return 'pong'
 
 
-@app.route("/db", methods=['GET'])
-def db():
+@app.route("/get_db", methods=['GET'])
+def get_db():
     # Connect to postgreSQL DB
     db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
     cur = db.cursor()
@@ -44,20 +44,28 @@ def login(username, password):
     cur = db.cursor()
     cur.execute('SELECT * FROM accounts WHERE name = %s', (username,))
     account = cur.fetchone()
-    verify_pass = argon2.PasswordHasher().verify(hash=account[2], password=password)
+    cur.close()
+    db.close()
+    try:
+        verify_pass = argon2.PasswordHasher().verify(hash=account[1], password=password)
+    except argon2.exceptions.VerifyMismatchError:
+        verify_pass = False
+
     if verify_pass:
         return "Logged in successfully!"
     return "Wrong password!"
 
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
     cur = db.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS accounts (id serial PRIMARY KEY, name varchar(100), pass varchar(1000));''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS accounts (name varchar(100) PRIMARY KEY, 
+                                                        pass varchar(1000));''')
 
     # Insert some data into the table
     hashed_password = argon2.PasswordHasher().hash(password=str.encode('password'))
-    cur.execute('''INSERT INTO accounts (name, pass) VALUES ('username', %s);''', (hashed_password,))
+    cur.execute('''INSERT INTO accounts (name, pass) VALUES ('username', %s) ON CONFLICT DO NOTHING ;''',
+                (hashed_password,))
 
     # commit the changes
     db.commit()
