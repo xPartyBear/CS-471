@@ -17,9 +17,6 @@
                             <!--This is the interior content of the side bar-->
                             <slot></slot>
                         </div>
-                        <div class="footer">
-                            This is where you would sign up/ in
-                        </div>
                     </div>
                 </div>
         </transition>   
@@ -51,6 +48,7 @@
 
 <style scoped>
     .tab{
+        
         float : right;
         background: lightgray;
         width: 64px;
@@ -61,6 +59,9 @@
         position: fixed;
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
+    }
+    .tab:hover {
+        cursor: pointer;
     }
     .sideBar {
         display: flex;
@@ -79,8 +80,9 @@
         position: absolute;
     }
     .content {
-        padding-top: 64px;
-        padding: 8px;
+        margin: 0;
+        position: absolute;
+        width: 100%;
     }
     .title {
         position: absolute;
