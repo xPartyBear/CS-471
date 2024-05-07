@@ -1,22 +1,41 @@
-import psycopg2
 import argon2
-from flask import Flask, request
+import psycopg2
+import pypokedex
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+import accounts
 
 app = Flask(__name__)
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 
+# THIS IS A TERRIBLE WAY TO LOGIN!!
+@app.route("/login/<username>/<password>/", methods=['GET'])
+def login(username, password):
+    return accounts.login(username, password)
+
+
+# THIS IS A TERRIBLE WAY TO LOGIN!!
+@app.route("/signup/<username>/<password>/", methods=['GET'])
+def signup(username, password):
+    return accounts.signup(username, password)
+
+
+@app.route('/reset', methods=['GET', 'POST'])
+def password_reset():
+    return accounts.password_reset()
+
+
 @app.route("/")
-def hello_world():
-    return "Hello, World!"
+def base():
+    return "Hello World!"
 
 
-@app.route("/ping", methods=['POST'])
-def ping():
-    print(request.data)
-    return 'pong'
+@app.route("/<dex_num>")
+def dex(dex_num):
+    pokemon = pypokedex.get(dex=int(dex_num))
+    return pokemon.name + " " + str(pokemon.types)
 
 
 @app.route("/get_db", methods=['GET'])
@@ -35,47 +54,6 @@ def get_db():
     cur.close()
     db.close()
     return data
-
-
-# THIS IS A TERRIBLE WAY TO LOGIN!!
-@app.route("/login/<username>/<password>/", methods=['GET'])
-def login(username, password):
-    db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
-    cur = db.cursor()
-    cur.execute('SELECT * FROM accounts WHERE name = %s', (username,))
-    account = cur.fetchone()
-    cur.close()
-    db.close()
-    try:
-        verify_pass = argon2.PasswordHasher().verify(hash=account[1], password=password)
-    except argon2.exceptions.VerifyMismatchError as e:
-        print(e)
-        verify_pass = False
-
-    if verify_pass:
-        return "Logged in successfully!"
-    return "Wrong password!"
-
-
-# THIS IS A TERRIBLE WAY TO SIGNUP!!
-@app.route("/signup/<username>/<password>/", methods=['GET'])
-def signup(username, password):
-    db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
-    cur = db.cursor()
-    hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
-    try:
-        cur.execute('''INSERT INTO accounts (name, pass) VALUES (%s, %s);''',
-                    (username, hashed_password,))
-        db.commit()
-    except psycopg2.errors.UniqueViolation as e:
-        print(e)
-        cur.close()
-        db.close()
-        return "User already exists!"
-
-    cur.close()
-    db.close()
-    return "Account Created!"
 
 
 if __name__ == "__main__":
