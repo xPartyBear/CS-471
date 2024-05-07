@@ -48,12 +48,34 @@ def login(username, password):
     db.close()
     try:
         verify_pass = argon2.PasswordHasher().verify(hash=account[1], password=password)
-    except argon2.exceptions.VerifyMismatchError:
+    except argon2.exceptions.VerifyMismatchError as e:
+        print(e)
         verify_pass = False
 
     if verify_pass:
         return "Logged in successfully!"
     return "Wrong password!"
+
+
+# THIS IS A TERRIBLE WAY TO SIGNUP!!
+@app.route("/signup/<username>/<password>/", methods=['GET'])
+def signup(username, password):
+    db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
+    cur = db.cursor()
+    hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
+    try:
+        cur.execute('''INSERT INTO accounts (name, pass) VALUES (%s, %s);''',
+                    (username, hashed_password,))
+        db.commit()
+    except psycopg2.errors.UniqueViolation as e:
+        print(e)
+        cur.close()
+        db.close()
+        return "User already exists!"
+
+    cur.close()
+    db.close()
+    return "Account Created!"
 
 
 if __name__ == "__main__":
