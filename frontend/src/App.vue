@@ -2,11 +2,12 @@
 import ping from '/services/ping.js'
 import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
+import SignUpIn from './components/SignUpIn.vue'
 </script>
 
 <template>
   <header>
-    <NavBar @sign-up=""/>
+    <NavBar @sign-up="toggleSignUp()"/>
   </header>
   <br>
   <br>
@@ -16,7 +17,9 @@ import NavBar from './components/NavBar.vue'
   </button>
   <p>Test results: {{output}}</p>
   -->
+  <SignUpIn v-if="signUpEnabled" @close="toggleSignUp()"></SignUpIn>
   <main>
+   
     <RouterView/>
     <!--
       This is where the sign up box will be
@@ -43,8 +46,8 @@ import NavBar from './components/NavBar.vue'
         })
         this.output += res.data;
       },
-      openSignUp(){
-
+      toggleSignUp(){
+        this.signUpEnabled = !this.signUpEnabled;
       }
     }
   }
