@@ -5,7 +5,7 @@ import MenuLink from './MenuLink.vue'
 </script>
 
 <template>
-    <div>
+    <div class="header">
         <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
                 <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
@@ -16,7 +16,7 @@ import MenuLink from './MenuLink.vue'
                 </MenuLink>
             </div>
         </SideBar>
-        Daily Pokedex
+        <div class="title">Daily Pokedex</div>
     </div>
 </template>
 
@@ -45,8 +45,8 @@ import MenuLink from './MenuLink.vue'
     }
 </script>
 
-<style scopes>
-    header {
+<style scoped>
+    .header {
         background-color: gray;
         float: left;
         position: fixed;
@@ -65,6 +65,11 @@ import MenuLink from './MenuLink.vue'
         color: black;
         margin: 0;
         height: 100%;
+    }
+    .title {
+        text-align: center;
+        left: 50%;
+        font-size: 32px;
     }
 
 
