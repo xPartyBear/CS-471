@@ -1,7 +1,6 @@
 <script setup>
   import PokemonSearch from '../components/PokemonSearch.vue';
   import PopupBox from '../components/PopupBox.vue';
-  import PokedexImg from './../assets/pokedex.png'
   import PokedexEntry from '../components/PokedexEntry.vue';
 </script>
 
