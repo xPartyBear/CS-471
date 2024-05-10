@@ -15,11 +15,8 @@
       <br>
       Create a new componenent file to put the share content in here
     </PopupBox>
-    <PopupBox v-if="displaySharePopup" @close="toggleShare()">
-      This is the popup box for sharing...
-      <br>
-      Create a new componenent file to put the share content in here
-    </PopupBox>
+    <PokedexEntry></PokedexEntry>
+    
   </div>
 </template>
 
