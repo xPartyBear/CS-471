@@ -1,52 +1,53 @@
 <script setup>
   import PopupBox from './PopupBox.vue';
+  import account from '../../services/account.js';
 </script>
 <template>
   <div>
     <!--Sign in window-->
     <PopupBox v-if="isSignIn" @close="close()">
       
-      <h2 style="text-align: center">Sign In</h2>
+      <h1 style="text-align: center">Log in</h1>
 
-      <h3 style="text-align: center">Email: </h3>
-      <input type="text" class="horizontal-center"/>
+      <p style="text-align: center">Email: </p>
+      <input v-model="logIn.email" type="text" class="horizontal-center"/>
       <br/>
-      <h3 style="text-align: center">Password: </h3>
-      <input type="password" class="horizontal-center"/>
+      <p style="text-align: center">Password: </p>
+      <input v-model='logIn.password' type="password" class="horizontal-center"/>
       <br/>
       <br/>
 
       <div class="horizontal-center">
-        <button @click="close()" type="submit">Login</button>
+        <button @click="login()" type="submit">Login</button>
       </div>
       <br/>
 
-      <p style="text-align:right">No account? <button type="submit" @click="toggleAccountCreation()">Sign Up</button></p>
+      <p style="text-align:center">No account? <button type="submit" @click="toggleAccountCreation()">Sign Up</button></p>
     </PopupBox>
 
 
     <!--Sign up window-->
     <PopupBox v-if="!isSignIn" @close="close()">
       
-      <h2 style="text-align: center">Sign Up</h2>
+      <h1 style="text-align: center">Sign Up</h1>
 
-      <h3 style="text-align: center">Email: </h3>
-      <input type="text" class="horizontal-center"/>
+      <p style="text-align: center">Email: </p>
+      <input v-model='signUp.email' type="text" class="horizontal-center"/>
       <br/>
-      <h3 style="text-align: center">Username: </h3>
-      <input type="text" class="horizontal-center"/>
+      <p style="text-align: center">Username: </p>
+      <input v-model='signUp.username' type="text" class="horizontal-center"/>
       <br/>
-      <h3 style="text-align: center">Password: </h3>
-      <input type="password" class="horizontal-center"/>
+      <p style="text-align: center">Password: </p>
+      <input v-model='signUp.password' type="password" class="horizontal-center"/>
       <br/>
       <br/>
 
       <div class="horizontal-center">
-        <button @click="close()" type="submit">Sign Up</button>
+        <button @click="signup()" type="submit">Sign Up</button>
       </div>
       <br/>
 
-      <p style="text-align:right">Have an account? <button type="submit" @click="toggleAccountCreation()">Sign In</button></p>
+      <p style="text-align:center">Have an account? <button type="link" @click="toggleAccountCreation()">Sign In</button></p>
     </PopupBox>
   </div>
 </template>
@@ -55,10 +56,38 @@
 export default {
   data(){
     return {
-      isSignIn: true
+      isSignIn: true,
+      signUp: {
+        email: '',
+        username: '',
+        password: ''
+      },
+      logIn: {
+        email: '',
+        password: ''
+      }
     }
   },
   methods: {
+    async login(){
+      //check if the login is valid
+      const res = await account.login(this.logIn.email,this.logIn.password);
+      console.log(res);
+      if(res.data == 'Logged in successfully!') {
+        this.$cookie.set("email", this.logIn.email);
+        this.close();
+      }
+      //this.close();
+    },
+    async signup(){
+      //check if the sign up is valid
+      const res = await account.signup(this.signUp.email,this.signUp.username,this.signUp.password);
+      console.log(res);
+      if(res.data == 'Account Created!'){
+        this.close();
+      }
+      //this.close();
+    },
     close() {
       this.$emit('close');
     },

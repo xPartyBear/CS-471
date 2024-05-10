@@ -1,10 +1,10 @@
 import requests from './requests'
 
-export default () => {
-    signUp (email,username,password) {
-        return requests().get('/signup',{data: {email,username,password}});
-    }
-    signIn (email,password) {
-        return requests().get('/login',{data: {email,password}});
+export default {
+    async signup (email,username,password) {
+        return await requests().post('/signup',{email,username,password});
+    },
+    async login (email,password) {
+        return await requests().post('/login',{email,password});
     }
 }
