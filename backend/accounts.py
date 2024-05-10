@@ -1,13 +1,16 @@
-import os
 import smtplib
 import ssl
 import argon2
 import psycopg2
-from flask import request
+import constants
 
 
-def login(username, password):
-    db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
+def login(username, password, request):
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
     cur = db.cursor()
     cur.execute('SELECT * FROM accounts WHERE name = %s', (username,))
     account = cur.fetchone()
@@ -24,8 +27,12 @@ def login(username, password):
     return "Wrong password!"
 
 
-def signup(username, password):
-    db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
+def signup(username, password, request):
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
     cur = db.cursor()
     hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
     try:
@@ -43,13 +50,13 @@ def signup(username, password):
     return "Account Created!"
 
 
-def password_reset():
+def password_reset(request):
     if request.method == 'POST':
         # Create a secure SSL context
         context = ssl.create_default_context()
 
-        with smtplib.SMTP_SSL(host=os.getenv("SMTP_SERVER"), port=int(os.getenv("PORT")), context=context) as server:
-            server.login(user=os.getenv("EMAIL"), password=os.getenv("PASSWORD"))
+        with smtplib.SMTP_SSL(host=constants.SMTP_SERVER, port=constants.SMTP_PORT, context=context) as server:
+            server.login(user=constants.EMAIL, password=constants.EMAIL_PASSWORD)
             # TODO: Send email here
 
     elif request.method == 'GET':
