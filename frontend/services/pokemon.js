@@ -1,4 +1,4 @@
-import requests from './requests';
+import requests from './requests'
 
 export default () => {
     
