@@ -1,6 +1,7 @@
 <script setup>
   import PokemonSearch from '../components/PokemonSearch.vue';
   import PopupBox from '../components/PopupBox.vue';
+  import PokedexImg from './../assets/pokedex.png'
 </script>
 
 <template>
@@ -14,6 +15,7 @@
       <br>
       Create a new componenent file to put the share content in here
     </PopupBox>
+    <img :src="PokedexImg" style="width:1000px; display: block; margin: 0 auto">
   </div>
 </template>
 
