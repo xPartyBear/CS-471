@@ -28,7 +28,7 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
                 selectedPokemon: '',
                 isSearching: false,
                 searchedPokemon: '',
-                options: ['a','b','c','d','e','a','alpha','a','a','a','a','a','a','a','a','a']
+                options: ['a','b','c','d','e','a','alpha','a','a','a','a','a','a','a','a','a','Pikachu']
             }
         },
 

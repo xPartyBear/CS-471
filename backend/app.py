@@ -59,7 +59,7 @@ def login():
 
     if verify_pass:
         # say they logged in successfully and give them their username
-        return "Logged in successfully!"
+        return jsonify(res="Passed",username=account[2])
     return "Wrong password!"
 
 

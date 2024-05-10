@@ -1,11 +1,8 @@
 <script setup>
   import PokemonSearch from '../components/PokemonSearch.vue';
   import PopupBox from '../components/PopupBox.vue';
-<<<<<<< HEAD
-  import PokedexEntry from '../components/PokedexEntry.vue';
-=======
   import PokedexImg from './../assets/pokedex.png'
->>>>>>> 7604c895d7bc961d65e9a9045bcb9160ba6522dd
+  import PokedexEntry from '../components/PokedexEntry.vue';
 </script>
 
 <template>
@@ -19,11 +16,8 @@
       <br>
       Create a new componenent file to put the share content in here
     </PopupBox>
-<<<<<<< HEAD
+    
     <PokedexEntry></PokedexEntry>
-=======
-    <img :src="PokedexImg" style="width:1000px; display: block; margin: 0 auto">
->>>>>>> 7604c895d7bc961d65e9a9045bcb9160ba6522dd
   </div>
 </template>
 
@@ -41,7 +35,7 @@ export default {
         return;
       },
       guess(){
-        console.log("THis is a testy");
+        console.log("TEST");
         //Call guesses here to check if they are correct
         this.toggleShare();
         return;

@@ -1,13 +1,24 @@
 //import './assets/main.css'
 
 import { createApp } from 'vue'
-import VueCookies from 'vue-cookies'
+import { globalCookiesConfig } from 'vue3-cookies'
+import VueCookies from 'vue3-cookies'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(router)
-app.use(VueCookies)
+app.use(router);
 
-app.mount('#app')
+globalCookiesConfig({
+    expireTimes: "30d",
+    path: "/",
+    domain: "",
+    secure: true,
+    sameSite: "None",
+});
+app.use(VueCookies);
+
+
+
+app.mount('#app');
