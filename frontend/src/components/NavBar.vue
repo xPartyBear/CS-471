@@ -2,6 +2,8 @@
 import {RouterLink} from 'vue-router'
 import SideBar from './SideBar.vue'
 import MenuLink from './MenuLink.vue'
+import BannerTextImg from './../assets/banner1.png'
+import BannerLogoImg from './../assets/banner2.png'
 </script>
 
 <template>
@@ -16,7 +18,9 @@ import MenuLink from './MenuLink.vue'
                 </MenuLink>
             </div>
         </SideBar>
-        <div class="title">Daily Pokedex</div>
+        <!--Banner Title-->
+        <img :src="BannerLogoImg" style="width: 70px">
+        <img :src="BannerTextImg" style="width: 300px; position:absolute; left:45%">
     </div>
 </template>
 
@@ -47,7 +51,7 @@ import MenuLink from './MenuLink.vue'
 
 <style scoped>
     .header {
-        background-color: gray;
+        background-color: rgb(255, 244, 194);
         float: left;
         position: fixed;
         width: 100%;
