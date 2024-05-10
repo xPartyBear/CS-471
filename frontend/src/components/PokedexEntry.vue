@@ -5,8 +5,8 @@
 
 <template>
     <div class="container">
-        <img :src="PokedexImg" style="width:1000px; display: block; margin: 0 auto">
-        <table>
+        <img class="bg" :src="PokedexImg" style="width:1000px; display: block; margin: 0 auto">
+        <table class="table">
             <tr>
                 <th :value="Type1">Type 1: ???</th>
                 <th :value="Type2">Type 2: ???</th>
@@ -41,17 +41,18 @@
 
 <style scoped>
     .container {
-        max-width: 820px;
-        width: 100%;
         background-color: lightblue;
-        height: 320px;
         border-radius: 4px;
         position:relative;
         margin: auto;
-        background-image: url('./../assets/pokedex.png' );
     }
     th {
         border: 1px solid black;
     }
+    .bg {
+        position: absolute;
+        z-index: -1;
+    }
+    
 </style>
 

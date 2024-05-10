@@ -65,6 +65,7 @@ import BannerLogoImg from './../assets/banner2.png'
         margin: 0px;
         height: 64px;
         display: block;
+        z-index: 1;
     }
     .pageLink {
         display: block;
