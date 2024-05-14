@@ -75,7 +75,8 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
     .icon{
         width: 32px;
         height: 32px;
-        padding-left: 50%;
+        right: 0px;
+        float: right;
     }
     .dropdown-wrapper {
         max-width: 350px;

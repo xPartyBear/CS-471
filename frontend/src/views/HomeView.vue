@@ -7,7 +7,7 @@
 <template>
   <div class = "Home">
     <h1>This is the home page</h1>
-    <PokemonSearch @guess="guess()"></PokemonSearch>
+    <PokemonSearch @guess="guess"></PokemonSearch>
     <br>
     <br>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
@@ -24,7 +24,8 @@
 export default {
     data(){
       return {
-        displaySharePopup: false
+        displaySharePopup: false,
+        desiredPokemon: "Pikachu",
       }
     },
     methods: {
@@ -33,10 +34,13 @@ export default {
         this.displaySharePopup = !this.displaySharePopup;
         return;
       },
-      guess(){
-        console.log("TEST");
-        //Call guesses here to check if they are correct
-        this.toggleShare();
+      guess(value){
+        console.log("TEST" + value);
+        //Desired Pokemon will need to be fetched
+        if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+          //Call guesses here to check if they are correct
+          this.toggleShare();
+        }
         return;
       }
     }
