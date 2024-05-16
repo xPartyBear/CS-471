@@ -113,4 +113,8 @@
         right: -25%;
     }
 
+    img {
+        padding: 8px;
+    }
+
 </style>
