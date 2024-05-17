@@ -7,7 +7,8 @@
 <template>
   <div class = "Home">
     <h1>This is the home page</h1>
-    <PokemonSearch @guess="guess()"></PokemonSearch>
+    <PokemonSearch @guess="guess"></PokemonSearch>
+    <br>
     <br>
     <br>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
@@ -30,32 +31,36 @@
 
 <script>
 export default {
-  data(){
-    return {
-      displaySharePopup: false
-    }
-  },
-  methods: {
-    toggleShare(){
-      //For now this is what it will 
-      this.displaySharePopup = !this.displaySharePopup;
-      return;
+    data(){
+      return {
+        displaySharePopup: false,
+        desiredPokemon: "Pikachu",
+      }
     },
-    guess(){
-      console.log("TEST");
-      //Call guesses here to check if they are correct
-      this.toggleShare();
-      return;
+    methods: {
+      toggleShare(){
+        //For now this is what it will do
+        this.displaySharePopup = !this.displaySharePopup;
+        return;
+      },
+      guess(value){
+        console.log("TEST" + value);
+        //Desired Pokemon will need to be fetched
+        if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+          //Call guesses here to check if they are correct
+          this.toggleShare();
+        }
+        return;
+      },
+      copyScore() {
+        //Copy to clipboard
+        navigator.clipboard.writeText(this.getScore+"\nPoints: "+this.getPoints+"\nStreak: "+this.getStreak);
+        //Chance copy button
+        document.getElementById("copy").innerHTML="Copied!"
+      }
     },
-    copyScore() {
-      //Copy to clipboard
-      navigator.clipboard.writeText(this.getScore+"\nPoints: "+this.getPoints+"\nStreak: "+this.getStreak);
-      //Chance copy button
-      document.getElementById("copy").innerHTML="Copied!"
-    }
-  },
-  //May be easier to put in data, not sure how it will be retrieving this information
-  computed: {
+    //May be easier to put in data, not sure how it will be retrieving this information
+    computed: {
     getScore: () => {
         return "❌❌✔️"
     },
@@ -64,7 +69,6 @@ export default {
     },
     getStreak: () => {
         return "7"
-    }
   }
 }
 </script>
