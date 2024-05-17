@@ -12,9 +12,8 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 @app.route("/")
-def base():
-    return "Hello World!"
-
+def hello_world():
+    return "Hello, World!"
 
 @app.route("/get_daily/<day>")
 def get_daily(day):
