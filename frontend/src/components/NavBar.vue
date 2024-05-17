@@ -1,14 +1,15 @@
 <script setup>
-import {RouterLink} from 'vue-router'
-import SideBar from './SideBar.vue'
-import MenuLink from './MenuLink.vue'
+import {RouterLink} from 'vue-router';
+import SideBar from './SideBar.vue';
+import MenuLink from './MenuLink.vue';
+import { useCookies } from 'vue3-cookies';
 import BannerTextImg from './../assets/banner1.png'
 import BannerLogoImg from './../assets/banner2.png'
 </script>
 
 <template>
-    <div>
-        <SideBar imgSrc="../../public/favicon.ico" :title="'Welcome, '+getName+ '!'">
+    <div class="header">
+        <SideBar imgSrc="../../public/bars.png" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
                 <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
                 <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
@@ -43,14 +44,20 @@ import BannerLogoImg from './../assets/banner2.png'
 
             },
             getName: () => {
+                const { cookies } = useCookies();
+                let username_value = cookies.get("username");
+                console.log(username_value);
+                if(username_value != null){
+                    return username_value;
+                }
                 return 'John Doe'
             },
         }
     }
 </script>
 
-<style scopes>
-    header {
+<style scoped>
+    .header {
         background-color: rgb(255, 244, 194);
         float: left;
         position: fixed;
@@ -58,6 +65,7 @@ import BannerLogoImg from './../assets/banner2.png'
         margin: 0px;
         height: 64px;
         display: block;
+        z-index: 1;
     }
     .pageLink {
         display: block;
@@ -69,6 +77,11 @@ import BannerLogoImg from './../assets/banner2.png'
         color: black;
         margin: 0;
         height: 100%;
+    }
+    .title {
+        text-align: center;
+        left: 50%;
+        font-size: 32px;
     }
 
 

@@ -1,6 +1,6 @@
 import psycopg2
 import argon2
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -15,8 +15,8 @@ def hello_world():
 
 @app.route("/ping", methods=['POST'])
 def ping():
-    print(request.data)
-    return 'pong'
+    print("HELP",request.get_json())
+    return jsonify(data = 'pong')
 
 
 @app.route("/get_db", methods=['GET'])
@@ -38,11 +38,16 @@ def get_db():
 
 
 # THIS IS A TERRIBLE WAY TO LOGIN!!
-@app.route("/login/<username>/<password>/", methods=['GET'])
-def login(username, password):
+@app.route("/login", methods=['POST'])
+def login():
+    data = request.get_json()
+    print(data)
+    email = data['email']
+    password = data['password']
+
     db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
     cur = db.cursor()
-    cur.execute('SELECT * FROM accounts WHERE name = %s', (username,))
+    cur.execute('SELECT * FROM accounts WHERE email = %s', (email,))
     account = cur.fetchone()
     cur.close()
     db.close()
@@ -53,19 +58,26 @@ def login(username, password):
         verify_pass = False
 
     if verify_pass:
-        return "Logged in successfully!"
+        # say they logged in successfully and give them their username
+        return jsonify(res="Passed",username=account[2])
     return "Wrong password!"
 
 
 # THIS IS A TERRIBLE WAY TO SIGNUP!!
-@app.route("/signup/<username>/<password>/", methods=['GET'])
-def signup(username, password):
+@app.route("/signup", methods=['POST'])
+def signup():
+    data = request.get_json()['data']
+    print(data)
+    email = data['email']
+    password = data['password']
+    username = data['username']
+    
     db = psycopg2.connect("dbname='postgres' user='softwareengineer' host='73.18.161.233' password='cs471' port='5432'")
     cur = db.cursor()
     hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
     try:
-        cur.execute('''INSERT INTO accounts (name, pass) VALUES (%s, %s);''',
-                    (username, hashed_password,))
+        cur.execute('''INSERT INTO accounts (name, pass, email) VALUES (%s, %s, %s);''',
+                    (username, hashed_password, email))
         db.commit()
     except psycopg2.errors.UniqueViolation as e:
         print(e)
