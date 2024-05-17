@@ -1,5 +1,5 @@
 <script setup>
-    import { toValue } from 'vue';
+import { toValue } from 'vue';
 import pokemon from '../../services/pokemon';
 import PokedexImg from './../assets/pokedex.png'; 
 </script>
