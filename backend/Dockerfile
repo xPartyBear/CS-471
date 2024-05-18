@@ -9,7 +9,7 @@ ENV WORKING_DIR=/home/backend
 WORKDIR ${WORKING_DIR}
 
 COPY requirements.txt .
-COPY app.py .
+COPY *.py .
 
 RUN groupadd ${USERNAME} && \
     useradd -g ${USERNAME} ${USERNAME}
