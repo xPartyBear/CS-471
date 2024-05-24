@@ -31,44 +31,45 @@
 
 <script>
 export default {
-    data(){
-      return {
-        displaySharePopup: false,
-        desiredPokemon: "Pikachu",
-      }
+  data() {
+    return {
+      displaySharePopup: false,
+      desiredPokemon: "Pikachu",
+    }
+  },
+  methods: {
+    toggleShare() {
+      //For now this is what it will do
+      this.displaySharePopup = !this.displaySharePopup;
+      return;
     },
-    methods: {
-      toggleShare(){
-        //For now this is what it will do
-        this.displaySharePopup = !this.displaySharePopup;
-        return;
-      },
-      guess(value){
-        console.log("TEST" + value);
-        //Desired Pokemon will need to be fetched
-        if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
-          //Call guesses here to check if they are correct
-          this.toggleShare();
-        }
-        return;
-      },
-      copyScore() {
-        //Copy to clipboard
-        navigator.clipboard.writeText(this.getScore+"\nPoints: "+this.getPoints+"\nStreak: "+this.getStreak);
-        //Chance copy button
-        document.getElementById("copy").innerHTML="Copied!"
+    guess(value) {
+      console.log("TEST" + value);
+      //Desired Pokemon will need to be fetched
+      if (value.toLowerCase() == this.desiredPokemon.toLowerCase()) {
+        //Call guesses here to check if they are correct
+        this.toggleShare();
       }
+      return;
     },
-    //May be easier to put in data, not sure how it will be retrieving this information
-    computed: {
+    copyScore() {
+      //Copy to clipboard
+      navigator.clipboard.writeText(this.getScore + "\nPoints: " + this.getPoints + "\nStreak: " + this.getStreak);
+      //Chance copy button
+      document.getElementById("copy").innerHTML = "Copied!"
+    }
+  },
+  //May be easier to put in data, not sure how it will be retrieving this information
+  computed: {
     getScore: () => {
-        return "❌❌✔️"
+      return "❌❌✔️"
     },
     getPoints: () => {
-        return "5000"
+      return "5000"
     },
     getStreak: () => {
-        return "7"
+      return "7"
+    }
   }
 }
 </script>

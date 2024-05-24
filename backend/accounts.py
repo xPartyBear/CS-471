@@ -35,7 +35,7 @@ def login(request):
 
 
 def signup(request):
-    data = request.get_json()['data']
+    data = request.get_json()
     print(data)
     email = data['email']
     password = data['password']

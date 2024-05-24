@@ -1,6 +1,5 @@
 <script setup>
   import PopupBox from './PopupBox.vue';
-  import account from '../../services/account.js';
   import {useCookies} from 'vue3-cookies';
 </script>
 <template>
@@ -54,6 +53,8 @@
 </template>
 
 <script>
+import account from "../../services/account.js";
+
 export default {
     data(){
         return {
