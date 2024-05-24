@@ -18,12 +18,12 @@ def login(request):
                           password=constants.DATABASE_PASSWORD,
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
-    cur.execute('SELECT * FROM accounts WHERE email = %s', (email,))
+    cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE email = %s''', (email,))
     account = cur.fetchone()
     cur.close()
     db.close()
     try:
-        verify_pass = argon2.PasswordHasher().verify(hash=account[1], password=password)
+        verify_pass = argon2.PasswordHasher().verify(hash=account[2], password=password)
     except argon2.exceptions.VerifyMismatchError as e:
         print(e)
         verify_pass = False
@@ -49,7 +49,7 @@ def signup(request):
     cur = db.cursor()
     hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
     try:
-        cur.execute('''INSERT INTO accounts (name, pass, email) VALUES (%s, %s, %s);''',
+        cur.execute(f'''INSERT INTO "{constants.USER_TABLE}" (username, password, email) VALUES (%s, %s, %s);''',
                     (username, hashed_password, email,))
         db.commit()
     except psycopg2.Error as e:

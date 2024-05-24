@@ -5,12 +5,11 @@ services:
     container_name: cs471_flask_backend
     depends_on:
       - db
-#    image: xpartybear/cs471-backend:latest
-    image: backend
+    image: xpartybear/cs471-backend:latest
     ports:
       - "5000:5000"
     env_file:
-      - ./backend/.backend_env
+      - .backend_env
     networks:
       - default
       - db
@@ -23,8 +22,7 @@ services:
     container_name: cs471_vue_frontend
     depends_on:
       - backend
-#    image: xpartybear/cs471-frontend:latest
-    image: frontend
+    image: xpartybear/cs471-frontend:latest
     ports:
       - "5173:8080"
     networks:
@@ -62,7 +60,7 @@ volumes:
 networks:
   proxy:
     name: proxy
-    external: false
+    external: true
   default:
     name: cs471
     external: false

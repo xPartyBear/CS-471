@@ -1,5 +1,4 @@
 import constants
-import argon2
 import psycopg2
 import pypokedex
 from flask import Flask, request
@@ -14,6 +13,7 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 @app.route("/")
 def hello_world():
     return "Hello, World!"
+
 
 @app.route("/get_daily/<day>")
 def get_daily(day):
@@ -50,7 +50,7 @@ def get_db():
     cur = db.cursor()
 
     # Select all products from the table
-    cur.execute('''SELECT * FROM accounts''')
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE}''')
 
     # Fetch the data
     data = cur.fetchall()
@@ -83,15 +83,32 @@ if __name__ == "__main__":
                           password=constants.DATABASE_PASSWORD,
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS accounts (name varchar(100) PRIMARY KEY, 
-                                                        pass varchar(1000),
-                                                        email varchar(100));''')
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS "{constants.USER_TABLE}" (id bigserial PRIMARY KEY,
+                                                                         username varchar(100), 
+                                                                         password varchar(100),
+                                                                         email varchar(100),
+                                                                         last_played date);''')
 
-    # Insert some data into the table
-    hashed_password = argon2.PasswordHasher().hash(password=str.encode('password'))
-    cur.execute('''INSERT INTO accounts (name, pass, email) VALUES 
-                ('username', %s, 'example@example.com') ON CONFLICT DO NOTHING ;''',
-                (hashed_password,))
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date,
+                                                                         pokedex_num integer, 
+                                                                         type1 varchar(0),
+                                                                         type2 varchar(0),
+                                                                         abilities varchar(0),
+                                                                         evo_method varchar(0),
+                                                                         evo_stage varchar(0),
+                                                                         height_weight varchar(0),
+                                                                         species varchar(0),
+                                                                         egg_type varchar(0),
+                                                                         region varchar(0),
+                                                                         form varchar(0),
+                                                                         PRIMARY KEY (game_date, pokedex_num));''')
+
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.USER_STAT_TABLE} (id bigserial PRIMARY KEY,
+                                                                            last_game_played date, 
+                                                                            current_streak integer,
+                                                                            longest_streak varchar(0),
+                                                                            recent_score varchar(0),
+                                                                            highest_score varchar(0));''')
 
     # commit the changes
     db.commit()

@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 
 SMTP_SERVER = os.getenv("SMTP_SERVER", default="smtp.gmail.com")
 SMTP_PORT = os.getenv("SMTP_PORT", default="587")
+USER_TABLE = "user"
+USER_STAT_TABLE = "user_stats"
+PUZZLE_TABLE = "puzzle_data"
 
 ##
 if os.getenv("EMAIL") == '' or os.getenv("EMAIL") is None:
