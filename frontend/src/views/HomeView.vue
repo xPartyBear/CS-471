@@ -46,7 +46,7 @@ export default {
       guess(value){
         console.log("TEST" + value);
         //Desired Pokemon will need to be fetched
-        if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+        if(value.name.toLowerCase() == this.desiredPokemon.toLowerCase()){
           //Call guesses here to check if they are correct
           this.toggleShare();
         }
@@ -69,6 +69,7 @@ export default {
     },
     getStreak: () => {
         return "7"
+    },
   }
 }
 </script>
