@@ -147,16 +147,16 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
             width:100%;
             height:32px;
             color:white;
-            background-color: blue;
-            border: 2px solid blue;
+            background-color: gray;
+            border: 2px solid gray;
             user-select: none;
             border-radius: 2px;
         }
         .check:hover {
             cursor: pointer;
             background-color: white;
-            color: blue;
-            border: 2px inset blue;
+            color: lightgray;
+            border: 2px inset lightgray;
             transition: all .3s ease;
         }
     }
@@ -167,7 +167,7 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
     }
     input[type=text]:focus{
         border: none;
-        background-color: lightblue;
+        background-color: lightgray;
     }
     .search-bar {
         position: relative;
