@@ -1,3 +1,4 @@
 /backend/venv/*
 /backend/.backend_env
 /.idea/*
+.database_env
