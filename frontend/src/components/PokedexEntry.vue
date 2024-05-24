@@ -60,7 +60,7 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                     "origin": "Kanto",
                     "form": "Normal",
                     "eggType": "Field/Fairy",
-                    "species": "Mouse Pokemon",
+                    "species": "The Mouse Pokemon",
                     // add cry
                     // add pokedex description
                 }
@@ -95,9 +95,13 @@ import MysteryImg from  './../assets/mystery_symbol.png';
         color: lightgray;
         background-image: url('./../assets/pokedex.png');
         background-size: cover;
-        height: 1000px;
-        width: 1000px;
+        height: 800px;
+        width: 800px;
         margin: auto;
+        position: absolute;
+        top: 15%;
+        left: 30%;
+        z-index: -1;
     }
     th {
         border-width: 2px;
@@ -114,17 +118,19 @@ import MysteryImg from  './../assets/mystery_symbol.png';
         z-index: -1;
     }
     .table {
-        position: static;
-        border-top: 40px solid transparent;
-        border-left: 100px solid transparent;
-        border-right: solid transparent;
-        border-bottom: solid transparent;
+        scale: .80;
+        position: absolute;
+        top: 50%;
+        left: 5%;
         font-size: 18px;
         font-family: "Courier New", monospace;
-        border-collapse: collapse;
+
     }
     .mystery {
-        border-top: 200px solid transparent;
+        position: absolute;
+        scale:.7;
+        top: 15%;
+        left: 30%;
     }
 
 </style>

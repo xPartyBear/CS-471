@@ -7,26 +7,26 @@
 <template>
   <div class = "Home">
     <br>
+    <br>  
+    <PokemonSearch @guess="guess" :guessEnabled="!isSearchDisabled()"></PokemonSearch>
     <br>
     <br>
-    <PokemonSearch @guess="guess"></PokemonSearch>
     <br>
-    <br>
+    <div class="guesses" v-text="getGuesses()"></div>
+    <PokedexEntry></PokedexEntry>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
       <div class="center"> 
-        <h1>You win!</h1>
+        <h1>{{isRight?"You win!":"You Lose!"}}</h1>
         <h3>Guesses:</h3>
-        <p v-text="getScore"></p>
+        <p v-text="getGuesses()"></p>
         <h3>Points:</h3>
-        <p v-text="getPoints"></p>
+        <p v-text="getPoints()"></p>
         <h3>Streak:</h3>
-        <p v-text="getStreak"></p>
+        <p v-text="getStreak()"></p>
 
         <button @click="copyScore()" id="copy" style="margin-bottom: auto">Copy score</button>
       </div>
     </PopupBox>
-    
-    <PokedexEntry></PokedexEntry>
   </div>
 </template>
 
@@ -35,7 +35,10 @@ export default {
   data(){
     return {
       displaySharePopup: false,
-      desiredPokemon: "Pikachu",
+      desiredPokemon: "pikachu",
+      maxGuesses: 7,
+      currentGuesses: 0,
+      isRight: false,
     }
   },
   methods: {
@@ -45,11 +48,18 @@ export default {
       return;
     },
     guess(value){
-      console.log("TEST" + value);
+      console.log("TEST" + value + " " + this.desiredPokemon);
       //Desired Pokemon will need to be fetched
       if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
         //Call guesses here to check if they are correct
+        this.isRight = true;
         this.toggleShare();
+      }
+      else{
+        this.currentGuesses++;
+        if(this.currentGuesses >= this.maxGuesses){
+          this.toggleShare();
+        }
       }
       return;
     },
@@ -58,12 +68,15 @@ export default {
       navigator.clipboard.writeText(this.getScore+"\nPoints: "+this.getPoints+"\nStreak: "+this.getStreak);
       //Chance copy button
       document.getElementById("copy").innerHTML="Copied!"
-    }
-  },
-  //May be easier to put in data, not sure how it will be retrieving this information
-  computed: {
-    getScore: () => {
-      return "❌❌✔️"
+    },
+    getGuesses() {
+      if(this.currentGuesses == null || this.maxGuesses == null) {
+        return '';
+      }
+      let wrongs =(this.currentGuesses>0?"❌".repeat(this.currentGuesses-1):"");
+      let wrongOrRight = (this.isRight?"✔️":((this.currentGuesses>0)?"❌":""));
+      let remainingGuesses = "✖️".repeat(this.maxGuesses-this.currentGuesses);
+      return wrongs + wrongOrRight + remainingGuesses;
     },
     getPoints: () => {
       return "5000"
@@ -71,6 +84,25 @@ export default {
     getStreak: () => {
         return "7"
     },
+    isSearchDisabled() {
+      return this.isRight || (this.currentGuesses>=this.maxGuesses);
+    },
+  },
+  //May be easier to put in data, not sure how it will be retrieving this information
+  //Moved out of 
+  computed: {
+    // moved out of computed because of the execution order of computed vs data, data variables aren't initialized before computed variables are made.
+    /*
+    getGuesses() {
+      return ""
+    },
+    getPoints: () => {
+      return "5000"
+    },
+    getStreak: () => {
+        return "7"
+    },
+    */
   }
 }
 </script>
@@ -84,5 +116,9 @@ export default {
 
   .center{
     text-align: center;
+  }
+  .guesses{
+    font-size: 18px;
+    text-align:center;
   }
 </style>

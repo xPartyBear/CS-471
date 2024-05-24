@@ -5,7 +5,7 @@ import pokemon from '../../services/pokemon.js'
 
 <template>
     <div class="dropdown-wrapper">
-        <div v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
+        <div :disabled="!guessEnabled" v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
             <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img class="icon" :src="selectedPokemon.imgSrc[0].default">
         </div>
         <div v-if="isSearching" class="dropdown-popover">
@@ -17,13 +17,16 @@ import pokemon from '../../services/pokemon.js'
                 </ul>
             </div>
         </div>
-        <button v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
+        <button :disabled="!guessEnabled" v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
     </div>
 </template>
 
 <script>
     export default {
         name: 'PokemonSearch',
+        props: {
+            guessEnabled: String,
+        },
         data(){
             return {
                 selectedPokemon: {
@@ -54,11 +57,11 @@ import pokemon from '../../services/pokemon.js'
                 this.isSearching = false;
             },
             guessPokemon(){
-                if(this.selectedPokemon == ''){
+                if(this.selectedPokemon == '' || !this.guessEnabled){
                     console.log('Invalid Pokemon Name');
                     return;
                 }
-                this.$emit('guess',this.selectedPokemon);
+                this.$emit('guess',this.selectedPokemon.name);
             },
             pokeIcon(name) {
                 // This is where we will need to get the image of the pokemon fetched (Backend Protocol)
@@ -88,9 +91,9 @@ import pokemon from '../../services/pokemon.js'
     .icon{
         width: 48px;
         height: 48px;
-        right: -30%;
-        top: -50%;
-        position:relative;
+        right: 0%;
+        top: -20%;
+        position:absolute;
 
     }
     .dropdown-wrapper {
