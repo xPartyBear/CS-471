@@ -6,7 +6,7 @@ import pokemon from '../../services/pokemon.js'
 <template>
     <div class="dropdown-wrapper">
         <div :disabled="!guessEnabled" v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
-            <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img class="icon" :src="selectedPokemon.imgSrc[0].default">
+            <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img v-if="isImageValid()" class="icon" :src="selectedPokemon.imgSrc[0].default">
         </div>
         <div v-if="isSearching" class="dropdown-popover">
             <div class="bg" @click="isSearching=!isSearching"></div>
@@ -15,6 +15,7 @@ import pokemon from '../../services/pokemon.js'
                 <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
                     <PokemonSearchElement :pokemonImg="option.imgSrc[0].default">{{option.name}}</PokemonSearchElement>
                 </ul>
+                <p v-if="isRequesting">Searching</p>
             </div>
         </div>
         <button :disabled="!guessEnabled" v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
@@ -25,7 +26,7 @@ import pokemon from '../../services/pokemon.js'
     export default {
         name: 'PokemonSearch',
         props: {
-            guessEnabled: String,
+            guessEnabled: Boolean,
         },
         data(){
             return {
@@ -36,6 +37,7 @@ import pokemon from '../../services/pokemon.js'
                     ]
                 },
                 isSearching: false,
+                isRequesting: false,
                 searchedPokemon: '',
                 options: [{name: 'Search', imgSrc:[{default:''}]}]
             }
@@ -53,7 +55,7 @@ import pokemon from '../../services/pokemon.js'
                     return;
                 }
                 this.selectedPokemon = res[0];
-                this.searchedPokemon = '';
+                this.searchedPokemon = res[0].name;
                 this.isSearching = false;
             },
             guessPokemon(){
@@ -63,10 +65,9 @@ import pokemon from '../../services/pokemon.js'
                 }
                 this.$emit('guess',this.selectedPokemon.name);
             },
-            pokeIcon(name) {
-                // This is where we will need to get the image of the pokemon fetched (Backend Protocol)
-                return '';
-            },
+            isImageValid (){
+                return !this.searchedPokemon == '';
+            }
             
         },
         computed : {
@@ -74,12 +75,13 @@ import pokemon from '../../services/pokemon.js'
         watch: {
             searchedPokemon: async function (name) {
                 // let res = this.options.filter((pokemonName) => pokemonName.toLowerCase().includes(this.searchedPokemon.toLowerCase()));
-        
+                this.isRequesting = true;
                 let res = await pokemon.filter_mons(this.searchedPokemon.toLowerCase());
                 //console.log(res.data);
                 if(res.data.result.length <= 0 || res.data.result[0] == ''){
                     this.options = [{name: 'Search', imgSrc:[{default:''}]}]
                 }
+                this.isRequesting = false;
                 //console.log(res.data.result);
                 this.options = res.data.result;
             },

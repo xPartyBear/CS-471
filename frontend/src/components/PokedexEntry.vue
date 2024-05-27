@@ -119,6 +119,7 @@ import MysteryImg from  './../assets/mystery_symbol.png';
     }
     .table {
         scale: .80;
+        max-width: 750px;
         position: absolute;
         top: 50%;
         left: 5%;

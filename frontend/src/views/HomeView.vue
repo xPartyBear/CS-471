@@ -18,11 +18,11 @@
       <div class="center"> 
         <h1>{{isRight?"You win!":"You Lose!"}}</h1>
         <h3>Guesses:</h3>
-        <p v-text="getGuesses()"></p>
+        <p v-text="stats.guesses"></p>
         <h3>Points:</h3>
-        <p v-text="getPoints()"></p>
+        <p v-text="stats.points"></p>
         <h3>Streak:</h3>
-        <p v-text="getStreak()"></p>
+        <p v-text="stats.streak"></p>
 
         <button @click="copyScore()" id="copy" style="margin-bottom: auto">Copy score</button>
       </div>
@@ -39,6 +39,11 @@ export default {
       maxGuesses: 7,
       currentGuesses: 0,
       isRight: false,
+      stats: {
+          guesses: '',
+          points: 0,
+          streak: 0,
+      }
     }
   },
   methods: {
@@ -48,7 +53,7 @@ export default {
       return;
     },
     guess(value){
-      console.log("TEST" + value + " " + this.desiredPokemon);
+      this.currentGuesses++;
       //Desired Pokemon will need to be fetched
       if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
         //Call guesses here to check if they are correct
@@ -56,7 +61,6 @@ export default {
         this.toggleShare();
       }
       else{
-        this.currentGuesses++;
         if(this.currentGuesses >= this.maxGuesses){
           this.toggleShare();
         }
@@ -65,7 +69,7 @@ export default {
     },
     copyScore() {
       //Copy to clipboard
-      navigator.clipboard.writeText(this.getScore+"\nPoints: "+this.getPoints+"\nStreak: "+this.getStreak);
+      navigator.clipboard.writeText(this.stats.guesses+"\nPoints: "+this.stats.points+"\nStreak: "+this.stats.streak);
       //Chance copy button
       document.getElementById("copy").innerHTML="Copied!"
     },
@@ -76,13 +80,14 @@ export default {
       let wrongs =(this.currentGuesses>0?"❌".repeat(this.currentGuesses-1):"");
       let wrongOrRight = (this.isRight?"✔️":((this.currentGuesses>0)?"❌":""));
       let remainingGuesses = "✖️".repeat(this.maxGuesses-this.currentGuesses);
-      return wrongs + wrongOrRight + remainingGuesses;
+      this.stats.guesses = wrongs + wrongOrRight + remainingGuesses;
+      return this.stats.guesses;
     },
-    getPoints: () => {
-      return "5000"
+    getPoints () {
+        return this.stats.points;
     },
-    getStreak: () => {
-        return "7"
+    getStreak () {
+        return this.stats.streak;
     },
     isSearchDisabled() {
       return this.isRight || (this.currentGuesses>=this.maxGuesses);
