@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('../views/PastPuzzlesView.vue'),
     },
     {
+      path: '/leaderboards',
+      name: 'leaderboards',
+      component: () => import('../views/LeaderboardsView.vue'),
+    },
+    {
       path: '/accounts',
       name: 'accounts',
       component: () => import('../views/AccountView.vue'),

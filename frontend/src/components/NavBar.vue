@@ -11,10 +11,11 @@ import BannerLogoImg from './../assets/banner2.png'
     <div class="header">
         <SideBar imgSrc="../../public/bars.png" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
-                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
-                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
-                <MenuLink icon="../../public/favicon.ico"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
-                <MenuLink icon="../../public/favicon.ico" @click="displaySignUp()">
+                <MenuLink icon="../../public/search-alt.png"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
+                <MenuLink icon="../../public/calendar-alt.png"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
+                <MenuLink icon="../../public/award.png"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
+                <MenuLink icon="../../public/smile.png"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
+                <MenuLink icon="../../public/signin.png" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
             </div>
