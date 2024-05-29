@@ -70,7 +70,7 @@ export default {
     copyScore() {
       //Copy to clipboard
       navigator.clipboard.writeText(this.stats.guesses+"\nPoints: "+this.stats.points+"\nStreak: "+this.stats.streak);
-      //Chance copy button
+      //Change copy button
       document.getElementById("copy").innerHTML="Copied!"
     },
     getGuesses() {
