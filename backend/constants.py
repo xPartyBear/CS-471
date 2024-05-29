@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# load_dotenv(".backend_env")
+load_dotenv(".backend_env")
 
 SMTP_SERVER = os.getenv("SMTP_SERVER", default="smtp.gmail.com")
 SMTP_PORT = os.getenv("SMTP_PORT", default="587")

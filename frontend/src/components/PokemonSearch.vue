@@ -1,34 +1,45 @@
 <script setup>
 import PokemonSearchElement from './PokemonSearchElement.vue';
+import pokemon from '../../services/pokemon.js'
 </script>
 
 <template>
     <div class="dropdown-wrapper">
-        <div v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
-            <span class="result"> Selected Pokemon: {{selectedPokemon}} <img class="icon" src="../../public/favicon.ico"> </span>
+        <div :disabled="!guessEnabled" v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
+            <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img v-if="isImageValid()" class="icon" :src="selectedPokemon.imgSrc[0].default">
         </div>
         <div v-if="isSearching" class="dropdown-popover">
             <div class="bg" @click="isSearching=!isSearching"></div>
-            <input class="search-bar" v-model="searchedPokemon" type="text" placeholder="Search for a Pokemon...">
+            <input class="search-bar" v-model="searchedPokemon" type="text" placeholder="Search for a Pokemon..." >
             <div class="options">
-                <ul class="option" v-for="option in filteredOptions" @click="selectPokemon(option)" >
-                    <PokemonSearchElement :pokemonImg="pokeIcon(option)">{{option}}</PokemonSearchElement>
+                <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
+                    <PokemonSearchElement :pokemonImg="option.imgSrc[0].default">{{option.name}}</PokemonSearchElement>
                 </ul>
+                <p v-if="isRequesting">Searching</p>
             </div>
         </div>
-        <button v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
+        <button :disabled="!guessEnabled" v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
     </div>
 </template>
 
 <script>
     export default {
         name: 'PokemonSearch',
+        props: {
+            guessEnabled: Boolean,
+        },
         data(){
             return {
-                selectedPokemon: '',
+                selectedPokemon: {
+                    name: '',
+                    imgSrc: [
+                        {default: ''}
+                    ]
+                },
                 isSearching: false,
+                isRequesting: false,
                 searchedPokemon: '',
-                options: ['a','b','c','d','e','a','alpha','a','a','a','a','a','a','a','a','a','Pikachu']
+                options: [{name: 'Search', imgSrc:[{default:''}]}]
             }
         },
 
@@ -38,34 +49,41 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
         },
         methods: {
             selectPokemon(option){
-                let res =  this.options.filter((pokemonName) => pokemonName.toLowerCase() == option.toLowerCase());
+                let res =  this.options.filter((pokemonName) => pokemonName.name.toLowerCase() == option.name.toLowerCase());
                 if(res.length <= 0){
                     this.isSearching=false;
                     return;
                 }
                 this.selectedPokemon = res[0];
-                this.searchedPokemon = '';
+                this.searchedPokemon = res[0].name;
                 this.isSearching = false;
             },
             guessPokemon(){
-                if(this.selectedPokemon == ''){
+                if(this.selectedPokemon == '' || !this.guessEnabled){
                     console.log('Invalid Pokemon Name');
                     return;
                 }
-                this.$emit('guess',this.selectedPokemon);
+                this.$emit('guess',this.selectedPokemon.name);
             },
-            pokeIcon(name) {
-                // This is where we will need to get the image of the pokemon fetched (Backend Protocol)
-                return '';
+            isImageValid (){
+                return !this.searchedPokemon == '';
             }
+            
         },
         computed : {
-            filteredOptions(name) {
-                let res = this.options.filter((pokemonName) => pokemonName.toLowerCase().includes(this.searchedPokemon.toLowerCase()));
-                if(res.length <= 0){
-                    return ['No Pokemon Found']
+        },
+        watch: {
+            searchedPokemon: async function (name) {
+                // let res = this.options.filter((pokemonName) => pokemonName.toLowerCase().includes(this.searchedPokemon.toLowerCase()));
+                this.isRequesting = true;
+                let res = await pokemon.filter_mons(this.searchedPokemon.toLowerCase());
+                //console.log(res.data);
+                if(res.data.result.length <= 0 || res.data.result[0] == ''){
+                    this.options = [{name: 'Search', imgSrc:[{default:''}]}]
                 }
-                return res;
+                this.isRequesting = false;
+                //console.log(res.data.result);
+                this.options = res.data.result;
             },
         }
     }
@@ -73,10 +91,12 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
 
 <style scoped>
     .icon{
-        width: 32px;
-        height: 32px;
-        right: 0px;
-        float: right;
+        width: 48px;
+        height: 48px;
+        right: 0%;
+        top: -20%;
+        position:absolute;
+
     }
     .dropdown-wrapper {
         max-width: 350px;
@@ -84,6 +104,7 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
         margin: auto;
 
         .selected-item {
+            display: flex;
             position: relative;
             height:25px;
             padding: 4px 0px;
@@ -104,6 +125,7 @@ import PokemonSearchElement from './PokemonSearchElement.vue';
         }
         .selected-item:hover{
             background-color: lightgray;
+            cursor: pointer;
         }
         .dropdown-popover {
             width: 100%;
