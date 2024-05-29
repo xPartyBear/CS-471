@@ -6,9 +6,15 @@ from flask import Flask, request
 from flask_cors import CORS
 import accounts
 
+import requests as r
+from flask import jsonify
+
 app = Flask(__name__)
 
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+complete_pokedex = [i['name'] for i in r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']]
+
 
 
 @app.route("/")
@@ -37,6 +43,17 @@ def dex(dex_num, attribute=None):
     if attribute is not None:
         return pokemon_json[attribute]
     return pokemon_json
+
+@app.route("/filter_mons",methods=['POST'])
+def filter_dex():
+    data = request.get_json()
+    f = data['filter']
+    if(f == ''):
+        return {'result':[]}
+    # need to manually get all the pokemon informtion using this command
+    filtered = list(filter(lambda i: f.lower() in i.lower(),complete_pokedex))
+    res = [{'name': i, 'imgSrc':pypokedex.get(name=i).sprites} for i in filtered]
+    return {'result':res}
 
 
 @app.route("/get_db", methods=['GET'])
