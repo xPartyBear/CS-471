@@ -108,24 +108,24 @@ if __name__ == "__main__":
 
     cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date,
                                                                          pokedex_num integer, 
-                                                                         type1 varchar(0),
-                                                                         type2 varchar(0),
-                                                                         abilities varchar(0),
-                                                                         evo_method varchar(0),
-                                                                         evo_stage varchar(0),
-                                                                         height_weight varchar(0),
-                                                                         species varchar(0),
-                                                                         egg_type varchar(0),
-                                                                         region varchar(0),
-                                                                         form varchar(0),
+                                                                         type1 varchar(100),
+                                                                         type2 varchar(100),
+                                                                         abilities varchar(100),
+                                                                         evo_method varchar(100),
+                                                                         evo_stage varchar(100),
+                                                                         height_weight varchar(100),
+                                                                         species varchar(100),
+                                                                         egg_type varchar(100),
+                                                                         region varchar(100),
+                                                                         form varchar(100),
                                                                          PRIMARY KEY (game_date, pokedex_num));''')
 
     cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.USER_STAT_TABLE} (id bigserial PRIMARY KEY,
                                                                             last_game_played date, 
                                                                             current_streak integer,
-                                                                            longest_streak varchar(0),
-                                                                            recent_score varchar(0),
-                                                                            highest_score varchar(0));''')
+                                                                            longest_streak varchar(100),
+                                                                            recent_score varchar(100),
+                                                                            highest_score varchar(100));''')
 
     # commit the changes
     db.commit()

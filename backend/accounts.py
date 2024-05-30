@@ -9,8 +9,8 @@ from flask import jsonify
 def login(request):
     data = request.get_json()
     print(data)
-    email = data['email']
-    password = data['password']
+    email = data['email'].strip("'")
+    password = data['password'].strip("'")
 
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
@@ -30,7 +30,7 @@ def login(request):
 
     if verify_pass:
         # say they logged in successfully and give them their username
-        return jsonify(res="Passed", username=account[2])
+        return jsonify(res="Passed", username=account[1])
     return "Wrong password!"
 
 
@@ -49,18 +49,23 @@ def signup(request):
     cur = db.cursor()
     hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
     try:
-        cur.execute(f'''INSERT INTO "{constants.USER_TABLE}" (username, password, email) VALUES (%s, %s, %s);''',
-                    (username, hashed_password, email,))
-        db.commit()
-    except psycopg2.Error as e:
-        print(e)
+        cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE email = %s;''', (email,))
+        account = cur.fetchone()
+        cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE username = %s;''', (username,))
+        account2 = cur.fetchone()
+        if account is None and account2 is None:
+            cur.execute(f'''INSERT INTO "{constants.USER_TABLE}" (username, password, email) VALUES (%s, %s, %s);''',
+                        (username, hashed_password, email,))
+            db.commit()
+            cur.close()
+            db.close()
+            return "Account Created!"
         cur.close()
         db.close()
         return "User already exists!"
-
-    cur.close()
-    db.close()
-    return "Account Created!"
+    except psycopg2.Error as e:
+        print(e)
+        return "Error signing up"
 
 
 def password_reset(request):
