@@ -55,6 +55,54 @@ def filter_dex():
     res = [{'name': i, 'imgSrc':pypokedex.get(name=i).sprites} for i in filtered]
     return {'result':res}
 
+@app.route("/get_info",methods=['POST'])
+def get_info():
+    data=request.get_json()
+    date=data['date']
+    info=data['info']
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+
+    cur.execute(f'''SELECT {info} FROM {constants.PUZZLE_TABLE} WHERE game_date=TO_DATE(%s,'MM-DD-YYYY');''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+
+    return res[0]
+
+@app.route('/guess_pokemon',methods=['POST'])
+def guess_pokemon():
+    failedToFetch = False
+    data=request.get_json()
+    date=data['date']
+    guess=data['guessName']
+    pokemon = pypokedex.get(name=guess)
+    dex = pokemon.dex
+    print(dex)
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE} WHERE game_date = TO_DATE(%s,'MM-DD-YYYY') AND pokedex_num = {dex};''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+    return {"res":res==None}
+ 
+
 
 @app.route("/get_db", methods=['GET'])
 def get_db():
@@ -106,7 +154,7 @@ if __name__ == "__main__":
                                                                          email varchar(100),
                                                                          last_played date);''')
 
-    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date,
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date DEFAULT CURRENT_DATE,
                                                                          pokedex_num integer, 
                                                                          type1 varchar(100),
                                                                          type2 varchar(100),

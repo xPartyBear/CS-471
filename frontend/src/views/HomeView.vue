@@ -2,6 +2,7 @@
   import PokemonSearch from '../components/PokemonSearch.vue';
   import PopupBox from '../components/PopupBox.vue';
   import PokedexEntry from '../components/PokedexEntry.vue';
+  import pokemon from '../../services/pokemon.js';
 </script>
 
 <template>
@@ -52,10 +53,19 @@ export default {
       this.displaySharePopup = !this.displaySharePopup;
       return;
     },
-    guess(value){
-      this.currentGuesses++;
+    date(){
+      const fullDate = new Date();
+      let day = fullDate.getDate();
+      let month = fullDate.getMonth() + 1;
+      let year = fullDate.getFullYear();
+      return `${month}-${day}-${year}`;
+    },
+    async guess(value){
       //Desired Pokemon will need to be fetched
-      if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+      const res = await pokemon.guess_pokemon(this.date(),value);
+      this.currentGuesses++;
+      console.log(res.data);
+      if(res.data){
         //Call guesses here to check if they are correct
         this.isRight = true;
         this.toggleShare();

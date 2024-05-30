@@ -1,7 +1,5 @@
 <script setup>
-import { toValue } from 'vue';
 import pokemon from '../../services/pokemon';
-import PokedexImg from './../assets/pokedex.png';
 import MysteryImg from  './../assets/mystery_symbol.png';
 </script>
 
@@ -16,18 +14,18 @@ import MysteryImg from  './../assets/mystery_symbol.png';
             </tr>
             <tr>
                 <th @click="reveal('abilities')">Abilities: {{pokemonInfo.abilities}}</th>
-                <th @click="reveal('evoMethod')">Evolution Method: {{pokemonInfo.evoMethod}}</th>
+                <th @click="reveal('height_weight')">Height and Weight: {{pokemonInfo.height_weight}}</th>
             </tr>
             <tr>
-                <th @click="reveal('stage')">Evolution Stage: {{pokemonInfo.stage}}</th>
-                <th @click="reveal('hw')">Height and Weight: {{pokemonInfo.hw}}</th>
+                <th @click="reveal('evo_method')">Evolution Method: {{pokemonInfo.evo_method}}</th>
+                <th @click="reveal('evo_stage')">Evolution Stage: {{pokemonInfo.evo_stage}}</th>
             </tr>
             <tr>
                 <th @click="reveal('species')">Species: {{pokemonInfo.species}}</th>
-                <th @click="reveal('eggType')">Egg Type: {{pokemonInfo.eggType}}</th>
+                <th @click="reveal('egg_type')">Egg Type: {{pokemonInfo.egg_type}}</th>
             </tr>
             <tr>
-                <th @click="reveal('origin')">Region Origin: {{pokemonInfo.origin}}</th>
+                <th @click="reveal('region')">Region Origin: {{pokemonInfo.region}}</th>
                 <th @click="reveal('form')">Form: {{pokemonInfo.form}}</th>
             </tr>
         </table>
@@ -42,25 +40,25 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                     "type1": "???",
                     "type2": "???",
                     "abilities": "???/???",
-                    "evoMethod": "???",
-                    "hw": "??ft ??in/??? lbs",
-                    "stage": "???",
-                    "origin": "???",
+                    "evo_method": "???",
+                    "height_weight": "??m /??? kg",
+                    "evo_stage": "???",
+                    "region": "???",
                     "form": "???",
-                    "eggType": "???/???",
+                    "egg_type": "???/???",
                     "species": "The ??? Pokemon",
                 },
                 hiddenInfo: {
-                    "type1": "Electric",
-                    "type2": "None",
-                    "abilities": "Static/Lightning Rod",
-                    "evoMethod": "Thunder Stone",
-                    "hw": "1ft 4in/13.2 lbs",
-                    "stage": "2",
-                    "origin": "Kanto",
-                    "form": "Normal",
-                    "eggType": "Field/Fairy",
-                    "species": "The Mouse Pokemon",
+                    "type1": "???",
+                    "type2": "???",
+                    "abilities": "???/???",
+                    "evo_method": "???",
+                    "height_weight": "??m /??? kg",
+                    "evo_stage": "???",
+                    "region": "???",
+                    "form": "???",
+                    "egg_type": "???/???",
+                    "species": "The ??? Pokemon",
                     // add cry
                     // add pokedex description
                 }
@@ -68,13 +66,24 @@ import MysteryImg from  './../assets/mystery_symbol.png';
             }
         },
         methods: {
-            reveal(value){
+            date(){
+                const fullDate = new Date();
+                let day = fullDate.getDate();
+                let month = fullDate.getMonth() + 1;
+                let year = fullDate.getFullYear();
+                return `${month}-${day}-${year}`;
+            },
+            async reveal(value){
                 // Fetch the data for the correct pokemon for the day
                 // emit the score change upon reveal.
-                if(this.pokemonInfo[value] == this.hiddenInfo[value]){
+                if(!this.pokemonInfo[value] == this.hiddenInfo[value]){
                     return;
                 }
-                this.pokemonInfo[value] = this.hiddenInfo[value];
+                //get the pokedexInfo for that value
+                const currentDate = this.date();
+                const res = await pokemon.get_poke_info(currentDate,value);
+                // this.pokemonInfo[value] = this.hiddenInfo[value];
+                this.pokemonInfo[value] = res.data;
                 //apply the reveal to the score
                 return;
             },
@@ -86,8 +95,10 @@ import MysteryImg from  './../assets/mystery_symbol.png';
         },
         mounted(){
             this.revealRandom();
-        }
+        },
+
     }
+
 </script>
 
 <style scoped>
