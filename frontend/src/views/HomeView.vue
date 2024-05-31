@@ -14,7 +14,8 @@
     <br>
     <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <PokedexEntry></PokedexEntry>
+    current score: {{stats.points}}
+    <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
       <div class="center"> 
         <h1>{{isRight?"You win!":"You Lose!"}}</h1>
@@ -42,12 +43,17 @@ export default {
       isRight: false,
       stats: {
           guesses: '',
-          points: 0,
+          points: 1000,
           streak: 0,
-      }
+      },
+      minimumScore: 100,
     }
   },
   methods: {
+    modifyScore(scoreChange){
+      let newScore = this.stats.points - scoreChange;
+      this.stats.points = Math.max(newScore, this.minimumScore);
+    },
     toggleShare(){
       //For now this is what it will do
       this.displaySharePopup = !this.displaySharePopup;
@@ -71,6 +77,7 @@ export default {
         this.toggleShare();
       }
       else{
+        this.modifyScore(50);
         if(this.currentGuesses >= this.maxGuesses){
           this.toggleShare();
         }

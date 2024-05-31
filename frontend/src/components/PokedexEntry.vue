@@ -82,6 +82,7 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                 //get the pokedexInfo for that value
                 const currentDate = this.date();
                 const res = await pokemon.get_poke_info(currentDate,value);
+                this.$emit('reveal');
                 // this.pokemonInfo[value] = this.hiddenInfo[value];
                 this.pokemonInfo[value] = res.data;
                 //apply the reveal to the score
