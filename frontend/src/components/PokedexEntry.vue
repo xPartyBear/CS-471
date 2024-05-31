@@ -1,37 +1,36 @@
 <script setup>
-import { toValue } from 'vue';
-import pokemon from '../../services/pokemon';
-import PokedexImg from './../assets/pokedex.png';
-import MysteryImg from  './../assets/mystery_symbol.png';
+import { toValue } from 'vue'
+import pokemon from '../../services/pokemon'
+import PokedexImg from './../assets/pokedex.png'
+import MysteryImg from './../assets/mystery_symbol.png'
 </script>
 
-
 <template>
-    <div class="container">
-        <img class="mystery" :src="MysteryImg" style="width:450px; display: block; margin: 0 auto">
-        <table class="table">
-            <tr>
-                <th @click="reveal('type1')">Type 1: {{pokemonInfo.type1}}</th>
-                <th @click="reveal('type2')">Type 2: {{pokemonInfo.type2}}</th>
-            </tr>
-            <tr>
-                <th @click="reveal('abilities')">Abilities: {{pokemonInfo.abilities}}</th>
-                <th @click="reveal('evoMethod')">Evolution Method: {{pokemonInfo.evoMethod}}</th>
-            </tr>
-            <tr>
-                <th @click="reveal('stage')">Evolution Stage: {{pokemonInfo.stage}}</th>
-                <th @click="reveal('hw')">Height and Weight: {{pokemonInfo.hw}}</th>
-            </tr>
-            <tr>
-                <th @click="reveal('species')">Species: {{pokemonInfo.species}}</th>
-                <th @click="reveal('eggType')">Egg Type: {{pokemonInfo.eggType}}</th>
-            </tr>
-            <tr>
-                <th @click="reveal('origin')">Region Origin: {{pokemonInfo.origin}}</th>
-                <th @click="reveal('form')">Form: {{pokemonInfo.form}}</th>
-            </tr>
-        </table>
-    </div>
+  <div class="container">
+    <img class="mystery" :src="MysteryImg" style="width: 450px; display: block; margin: 0 auto" />
+    <table class="table">
+      <tr>
+        <th @click="reveal('type1')">Type 1: {{ pokemonInfo.type1 }}</th>
+        <th @click="reveal('type2')">Type 2: {{ pokemonInfo.type2 }}</th>
+      </tr>
+      <tr>
+        <th @click="reveal('abilities')">Abilities: {{ pokemonInfo.abilities }}</th>
+        <th @click="reveal('evoMethod')">Evolution Method: {{ pokemonInfo.evoMethod }}</th>
+      </tr>
+      <tr>
+        <th @click="reveal('stage')">Evolution Stage: {{ pokemonInfo.stage }}</th>
+        <th @click="reveal('hw')">Height and Weight: {{ pokemonInfo.hw }}</th>
+      </tr>
+      <tr>
+        <th @click="reveal('species')">Species: {{ pokemonInfo.species }}</th>
+        <th @click="reveal('eggType')">Egg Type: {{ pokemonInfo.eggType }}</th>
+      </tr>
+      <tr>
+        <th @click="reveal('origin')">Region Origin: {{ pokemonInfo.origin }}</th>
+        <th @click="reveal('form')">Form: {{ pokemonInfo.form }}</th>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -135,4 +134,3 @@ import MysteryImg from  './../assets/mystery_symbol.png';
     }
 
 </style>
-

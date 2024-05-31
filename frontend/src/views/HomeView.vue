@@ -1,7 +1,7 @@
 <script setup>
-  import PokemonSearch from '../components/PokemonSearch.vue';
-  import PopupBox from '../components/PopupBox.vue';
-  import PokedexEntry from '../components/PokedexEntry.vue';
+import PokemonSearch from '../components/PokemonSearch.vue'
+import PopupBox from '../components/PopupBox.vue'
+import PokedexEntry from '../components/PokedexEntry.vue'
 </script>
 
 <template>
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       displaySharePopup: false,
       desiredPokemon: "pikachu",
@@ -47,15 +47,15 @@ export default {
     }
   },
   methods: {
-    toggleShare(){
+    toggleShare() {
       //For now this is what it will do
-      this.displaySharePopup = !this.displaySharePopup;
-      return;
+      this.displaySharePopup = !this.displaySharePopup
+      return
     },
     guess(value){
       this.currentGuesses++;
       //Desired Pokemon will need to be fetched
-      if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+      if (value.toLowerCase() == this.desiredPokemon.toLowerCase()) {
         //Call guesses here to check if they are correct
         this.isRight = true;
         this.toggleShare();
@@ -102,7 +102,7 @@ export default {
       return ""
     },
     getPoints: () => {
-      return "5000"
+      return '5000'
     },
     getStreak: () => {
         return "7"
@@ -113,11 +113,11 @@ export default {
 </script>
 
 <style scoped>
-  .Home {
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%
-  }
+.Home {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 
   .center{
     text-align: center;
