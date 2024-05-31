@@ -45,8 +45,8 @@ export default {
         {
           name: 'Heidi Gwinner',
           email: 'gwin3383@kettering.edu',
-          github: 'https://www.github.com/hgwinner',
-          linkedin: 'https://www.linkedin.com/in/heidigwinner'
+          github: 'https://www.github.com/gwinner-h',
+          linkedin: 'https://www.linkedin.com/in/heidi-gwinner'
         }
       ]
     }
