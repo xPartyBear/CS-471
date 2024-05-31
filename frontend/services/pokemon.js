@@ -9,5 +9,8 @@ export default {
     },
     guess_pokemon(date,guessName) {
         return requests().post('/guess_pokemon',{date,guessName});
+    },
+    get_pokemon(date){
+        return requests().post('/get-pokemon',{date})
     }
 } 

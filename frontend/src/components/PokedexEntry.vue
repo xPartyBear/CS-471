@@ -21,7 +21,6 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                 <th @click="reveal('evo_stage')">Evolution Stage: {{pokemonInfo.evo_stage}}</th>
             </tr>
             <tr>
-                <th @click="reveal('species')">Species: {{pokemonInfo.species}}</th>
                 <th @click="reveal('egg_type')">Egg Type: {{pokemonInfo.egg_type}}</th>
             </tr>
             <tr>
@@ -46,7 +45,6 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                     "region": "???",
                     "form": "???",
                     "egg_type": "???/???",
-                    "species": "The ??? Pokemon",
                 },
                 hiddenInfo: {
                     "type1": "???",
@@ -58,7 +56,6 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                     "region": "???",
                     "form": "???",
                     "egg_type": "???/???",
-                    "species": "The ??? Pokemon",
                     // add cry
                     // add pokedex description
                 }
@@ -73,7 +70,7 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                 let year = fullDate.getFullYear();
                 return `${month}-${day}-${year}`;
             },
-            async reveal(value){
+            async reveal(value,scoreEffected=true){
                 // Fetch the data for the correct pokemon for the day
                 // emit the score change upon reveal.
                 if(!this.pokemonInfo[value] == this.hiddenInfo[value]){
@@ -82,7 +79,9 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                 //get the pokedexInfo for that value
                 const currentDate = this.date();
                 const res = await pokemon.get_poke_info(currentDate,value);
-                this.$emit('reveal');
+                if(scoreEffected){
+                    this.$emit('reveal');
+                }
                 // this.pokemonInfo[value] = this.hiddenInfo[value];
                 this.pokemonInfo[value] = res.data;
                 //apply the reveal to the score
@@ -90,9 +89,16 @@ import MysteryImg from  './../assets/mystery_symbol.png';
             },
             revealRandom(){
                 let keys = Object.keys(this.pokemonInfo);
-                this.reveal(keys[Math.floor(keys.length * Math.random())]);
+                this.reveal(keys[Math.floor(keys.length * Math.random())],false);
                 return;
+            },
+            revealAll(){
+                let keys = Object.keys(this.pokemonInfo);
+                for (i in keys){
+                    this.reveal(i,false);
+                }
             }
+            
         },
         mounted(){
             this.revealRandom();
