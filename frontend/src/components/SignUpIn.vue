@@ -81,6 +81,8 @@ export default {
                 cookies.set("username",res.data.username);
                 this.close();
             }
+            //Refresh the page
+            this.$router.reload();
             //this.close();
         },
         async signup(){
@@ -88,11 +90,13 @@ export default {
             const { cookies } = useCookies();
             const res = await account.signup(this.signUp.email,this.signUp.username,this.signUp.password);
             console.log(res);
-            if(res.data == 'Account Created!'){
+            if(res.data.res == 'Passed'){
                 cookies.set("email",this.signUp.email);
-                cookies.set("username",this.signIn.username);
+                cookies.set("username",this.signUp.username);
                 this.close();
             }
+            //Refresh the page
+            this.$router.reload();
             //this.close();
         },
         close() {
