@@ -28,7 +28,7 @@ export default {
           name: 'Michael Dekoski',
           email: 'deko6236@kettering.edu',
           github: 'https://www.github.com/xpartybear',
-          linkedin: 'https://www.linkedin.com/in/michaeldekoski'
+          linkedin: 'https://www.linkedin.com/in/michael-dekoski-282806195/'
         },
         {
           name: 'William Nashif',
