@@ -15,7 +15,8 @@ import BannerLogoImg from './../assets/banner2.png'
                 <MenuLink icon="../../public/calendar-alt.png"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
                 <MenuLink icon="../../public/award.png"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
                 <MenuLink icon="../../public/smile.png"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
-                <MenuLink icon="../../public/signin.png" @click="displaySignUp()">
+                <menuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</menuLink>
+                <MenuLink icon="../../public/signin.png" v-if="!isSignedIn" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
             </div>
@@ -31,19 +32,34 @@ import BannerLogoImg from './../assets/banner2.png'
         name: 'NavBar',
         data() {
             return {
-                
+                isSignedIn: false
             }
         },  
         methods: {
+            logout(){
+                //check if the login is valid
+                const { cookies } = useCookies();
+                cookies.set("email","");
+                cookies.set("username","")
+                //Refresh the page
+                this.$emit('refresh')
+            },
             displaySignUp(){
                 this.$emit('sign-up');
                 console.log('show sign up modal');
             },
+            signedin(){
+                this.isSignedIn=true
+            }
+        },
+        beforeMount(){
+            const { cookies } = useCookies();
+            let username_value = cookies.get("username");
+            if(username_value != null){
+                this.isSignedIn=true;
+            }
         },
         computed: {
-            isSignedIn: () => {
-
-            },
             getName: () => {
                 const { cookies } = useCookies();
                 let username_value = cookies.get("username");
@@ -51,7 +67,7 @@ import BannerLogoImg from './../assets/banner2.png'
                 if(username_value != null){
                     return username_value;
                 }
-                return 'John Doe'
+                return 'nobody'
             },
         }
     }
