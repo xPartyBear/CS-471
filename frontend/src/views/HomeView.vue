@@ -2,6 +2,7 @@
   import PokemonSearch from '../components/PokemonSearch.vue';
   import PopupBox from '../components/PopupBox.vue';
   import PokedexEntry from '../components/PokedexEntry.vue';
+  import pokemon from '../../services/pokemon.js';
 </script>
 
 <template>
@@ -13,10 +14,14 @@
     <br>
     <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <PokedexEntry></PokedexEntry>
+    current score: {{stats.points}}
+    <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
       <div class="center"> 
         <h1>{{isRight?"You win!":"You Lose!"}}</h1>
+        <img :src="todaysPokeImg" :alt="todaysPokemon">
+        <br>
+        {{todaysPokemon}}
         <h3>Guesses:</h3>
         <p v-text="stats.guesses"></p>
         <h3>Points:</h3>
@@ -35,33 +40,57 @@ export default {
   data(){
     return {
       displaySharePopup: false,
-      desiredPokemon: "pikachu",
       maxGuesses: 7,
       currentGuesses: 0,
       isRight: false,
       stats: {
           guesses: '',
-          points: 0,
+          points: 1000,
           streak: 0,
-      }
+      },
+      minimumScore: 0,
+      todaysPokeImg: '',
+      todaysPokemon: ''
     }
   },
   methods: {
+    modifyScore(scoreChange){
+      let newScore = this.stats.points - scoreChange;
+      this.stats.points = Math.max(newScore, this.minimumScore);
+    },
     toggleShare(){
       //For now this is what it will do
       this.displaySharePopup = !this.displaySharePopup;
       return;
     },
-    guess(value){
-      this.currentGuesses++;
+    date(){
+      const fullDate = new Date();
+      let day = fullDate.getDate();
+      let month = fullDate.getMonth() + 1;
+      let year = fullDate.getFullYear();
+      return `${month}-${day}-${year}`;
+    },
+    async guess(value){
       //Desired Pokemon will need to be fetched
-      if(value.toLowerCase() == this.desiredPokemon.toLowerCase()){
+      const res = await pokemon.guess_pokemon(this.date(),value);
+      this.currentGuesses++;
+      console.log(res.data);
+      if(res.data.res){
         //Call guesses here to check if they are correct
         this.isRight = true;
         this.toggleShare();
+        const todaysPokemon = await pokemon.get_pokemon(this.date());
+        console.log(todaysPokemon);
+        this.todaysPokemon = todaysPokemon.data.name;
+        this.todaysPokeImg = todaysPokemon.data.imgSrc;
       }
       else{
+        this.modifyScore(50);
         if(this.currentGuesses >= this.maxGuesses){
+          const todaysPokemon = await pokemon.get_pokemon(this.date());
+          console.log(todaysPokemon);
+          this.todaysPokemon = todaysPokemon.data.name;
+          this.todaysPokeImg = todaysPokemon.data.imgSrc;
           this.toggleShare();
         }
       }

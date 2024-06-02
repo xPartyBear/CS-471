@@ -9,8 +9,8 @@ from flask import jsonify
 def login(request):
     data = request.get_json()
     print(data)
-    email = data['email']
-    password = data['password']
+    email = data['email'].strip("'")
+    password = data['password'].strip("'")
 
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
@@ -18,24 +18,26 @@ def login(request):
                           password=constants.DATABASE_PASSWORD,
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
-    cur.execute('SELECT * FROM accounts WHERE email = %s', (email,))
+    cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE email = %s''', (email,))
     account = cur.fetchone()
+    print (account)
     cur.close()
     db.close()
     try:
-        verify_pass = argon2.PasswordHasher().verify(hash=account[1], password=password)
+        verify_pass = argon2.PasswordHasher().verify(hash=account[2], password=password)
     except argon2.exceptions.VerifyMismatchError as e:
         print(e)
         verify_pass = False
 
     if verify_pass:
         # say they logged in successfully and give them their username
-        return jsonify(res="Passed", username=account[2])
-    return "Wrong password!"
+        # should send them a session id or something but whatever
+        return jsonify(res="Passed", username=account[1])
+    return jsonify(res="Failed", data="Wrong password!")
 
 
 def signup(request):
-    data = request.get_json()['data']
+    data = request.get_json()
     print(data)
     email = data['email']
     password = data['password']
@@ -49,18 +51,23 @@ def signup(request):
     cur = db.cursor()
     hashed_password = argon2.PasswordHasher().hash(password=str.encode(password))
     try:
-        cur.execute('''INSERT INTO accounts (name, pass, email) VALUES (%s, %s, %s);''',
-                    (username, hashed_password, email,))
-        db.commit()
-    except psycopg2.Error as e:
-        print(e)
+        cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE email = %s;''', (email,))
+        account = cur.fetchone()
+        cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE username = %s;''', (username,))
+        account2 = cur.fetchone()
+        if account is None and account2 is None:
+            cur.execute(f'''INSERT INTO "{constants.USER_TABLE}" (username, password, email) VALUES (%s, %s, %s);''',
+                        (username, hashed_password, email,))
+            db.commit()
+            cur.close()
+            db.close()
+            return "Account Created!"
         cur.close()
         db.close()
         return "User already exists!"
-
-    cur.close()
-    db.close()
-    return "Account Created!"
+    except psycopg2.Error as e:
+        print(e)
+        return "Error signing up"
 
 
 def password_reset(request):

@@ -1,5 +1,4 @@
 import constants
-import argon2
 import psycopg2
 import pypokedex
 from flask import Flask, request
@@ -20,6 +19,7 @@ complete_pokedex = [i['name'] for i in r.get('https://pokeapi.co/api/v2/pokemon?
 @app.route("/")
 def hello_world():
     return "Hello, World!"
+
 
 @app.route("/get_daily/<day>")
 def get_daily(day):
@@ -44,6 +44,32 @@ def dex(dex_num, attribute=None):
         return pokemon_json[attribute]
     return pokemon_json
 
+
+@app.route('/get-pokemon',methods=['POST'])
+def get_pokemon():
+    data = request.get_json()
+    date = data['date']
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    cur.execute(f'''SELECT pokedex_num FROM {constants.PUZZLE_TABLE} WHERE game_date=TO_DATE(%s,'MM-DD-YYYY');''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+    dex_num = res[0]
+    print(dex_num)
+    simple_data = pypokedex.get(dex=int(dex_num))
+    finalRes = {"name": simple_data.name, "imgSrc": simple_data.sprites[0]['default']}
+    print(finalRes)
+    return finalRes
+
+
 @app.route("/filter_mons",methods=['POST'])
 def filter_dex():
     data = request.get_json()
@@ -54,6 +80,55 @@ def filter_dex():
     filtered = list(filter(lambda i: f.lower() in i.lower(),complete_pokedex))
     res = [{'name': i, 'imgSrc':pypokedex.get(name=i).sprites} for i in filtered]
     return {'result':res}
+
+@app.route("/get_info",methods=['POST'])
+def get_info():
+    data=request.get_json()
+    date=data['date']
+    info=data['info']
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+
+    cur.execute(f'''SELECT {info} FROM {constants.PUZZLE_TABLE} WHERE game_date=TO_DATE(%s,'MM-DD-YYYY');''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+
+    return res[0]
+
+@app.route('/guess_pokemon',methods=['POST'])
+def guess_pokemon():
+    failedToFetch = False
+    data=request.get_json()
+    date=data['date']
+    guess=data['guessName']
+    pokemon = pypokedex.get(name=guess)
+    dex = pokemon.dex
+    print(dex)
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE} WHERE game_date = TO_DATE(%s,'MM-DD-YYYY') AND pokedex_num = {dex};''', (date,))
+
+    res = cur.fetchone()
+    print(res)
+
+    cur.close()
+    db.close()
+    return {"res":( not res==None)}
+ 
 
 
 @app.route("/get_db", methods=['GET'])
@@ -67,7 +142,7 @@ def get_db():
     cur = db.cursor()
 
     # Select all products from the table
-    cur.execute('''SELECT * FROM accounts''')
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE}''')
 
     # Fetch the data
     data = cur.fetchall()
@@ -100,15 +175,32 @@ if __name__ == "__main__":
                           password=constants.DATABASE_PASSWORD,
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS accounts (name varchar(100) PRIMARY KEY, 
-                                                        pass varchar(1000),
-                                                        email varchar(100));''')
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS "{constants.USER_TABLE}" (id bigserial PRIMARY KEY,
+                                                                         username varchar(100), 
+                                                                         password varchar(100),
+                                                                         email varchar(100),
+                                                                         last_played date);''')
 
-    # Insert some data into the table
-    hashed_password = argon2.PasswordHasher().hash(password=str.encode('password'))
-    cur.execute('''INSERT INTO accounts (name, pass, email) VALUES 
-                ('username', %s, 'example@example.com') ON CONFLICT DO NOTHING ;''',
-                (hashed_password,))
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date DEFAULT CURRENT_DATE,
+                                                                         pokedex_num integer, 
+                                                                         type1 varchar(100),
+                                                                         type2 varchar(100),
+                                                                         abilities varchar(100),
+                                                                         evo_method varchar(100),
+                                                                         evo_stage varchar(100),
+                                                                         height_weight varchar(100),
+                                                                         species varchar(100),
+                                                                         egg_type varchar(100),
+                                                                         region varchar(100),
+                                                                         form varchar(100),
+                                                                         PRIMARY KEY (game_date, pokedex_num));''')
+
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.USER_STAT_TABLE} (id bigserial PRIMARY KEY,
+                                                                            last_game_played date, 
+                                                                            current_streak integer,
+                                                                            longest_streak varchar(100),
+                                                                            recent_score varchar(100),
+                                                                            highest_score varchar(100));''')
 
     # commit the changes
     db.commit()
