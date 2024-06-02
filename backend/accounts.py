@@ -61,13 +61,13 @@ def signup(request):
             db.commit()
             cur.close()
             db.close()
-            return "Account Created!"
+            return jsonify(res="Passed", data="Account Created")
         cur.close()
         db.close()
-        return "User already exists!"
+        return jsonify(res="Failed", data="Account Already Exists")
     except psycopg2.Error as e:
         print(e)
-        return "Error signing up"
+        return jsonify(res="Failed", data="Error Signing Up")
 
 
 def password_reset(request):

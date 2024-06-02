@@ -82,7 +82,7 @@ export default {
                 this.close();
             }
             //Refresh the page
-            this.$router.reload();
+            location.reload();
             //this.close();
         },
         async signup(){
@@ -96,7 +96,7 @@ export default {
                 this.close();
             }
             //Refresh the page
-            this.$router.reload();
+            location.reload();
             //this.close();
         },
         close() {
