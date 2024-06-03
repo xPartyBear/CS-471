@@ -75,7 +75,8 @@ import BannerLogoImg from './../assets/banner2.png'
 
 <style scoped>
     .header {
-        background-color: rgb(255, 244, 194);
+        background-color: white;
+        box-shadow: 0px 5px 5px lightgray;
         float: left;
         position: fixed;
         width: 100%;

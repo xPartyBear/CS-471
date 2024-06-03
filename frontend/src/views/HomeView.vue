@@ -14,7 +14,8 @@
     <br>
     <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <div class="points">Current Score: {{stats.points}}</div>
+    <br>
+    <div id="score">current score: {{stats.points}}</div>
     <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
     <div class="footer">Date: {{pokemon.get_date($route.params)}}</div>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
@@ -142,7 +143,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-    height: 100%;
+    height: 100%;;
   }
   .footer {
     margin: auto;
@@ -155,11 +156,13 @@ export default {
   }
   .guesses{
     font-size: 18px;
-    text-align:center;
-  }
-  .points {
     text-align: center;
-    font-size: 18px;
-    font-family: 'Courier New', Courier, monospace;
+  }
+  #score {
+    text-align: center;
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+    font-weight: bolder;
+    color: rgb(156,100,100);
+    font-size: 20px;
   }
 </style>

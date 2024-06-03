@@ -48,9 +48,12 @@
 
 <style scoped>
     .tab{
-        
         float : right;
-        background: lightgray;
+        background: rgb(255, 220, 220);
+        border-left: solid rgb(156,100,100) 4px;
+        border-top: solid rgb(156,100,100) 4px;
+        border-bottom: solid rgb(156,100,100) 4px;
+        box-shadow: 5px 5px 5px rgb(156,100,100);
         width: 64px;
         height: 64px;
         top:0px;
@@ -67,7 +70,9 @@
         display: flex;
         direction: column;
         height: 100%;
-        background-color: gray;
+        background-color: rgb(255, 220, 220);
+        border-left: solid rgb(156,100,100) 4px;
+        border-bottom: solid rgb(156,100,100) 4px;
         position: fixed;
         right:0;
         top: 0;
@@ -88,8 +93,14 @@
         position: absolute;
         width: 100%;
         height: 64px;
-        background-color: lightgrey;
+        background-color: rgb(255, 220, 220);
+        border-top: solid rgb(156,100,100) 4px;
+        border-right: solid rgb(156,100,100) 4px;
         border-bottom-right-radius: 16px;
+        font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 21px 0;
     }
     .footer {
         bottom: 0;
