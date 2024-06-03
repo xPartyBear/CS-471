@@ -22,7 +22,7 @@ export default {
           name: 'Ethan Rowe',
           email: 'rowe8284@kettering.edu',
           github: 'https://github.com/derppancakes',
-          linkedin: 'https://www.linkedin.com/in/ethanrowe'
+          linkedin: 'https://www.linkedin.com/in/ethan-rowe-9475a61b5/'
         },
         {
           name: 'Michael Dekoski',
