@@ -80,9 +80,9 @@ export default {
                 cookies.set("email", this.logIn.email);
                 cookies.set("username",res.data.username);
                 this.close();
+                //Refresh the page
+                location.reload();
             }
-            //Refresh the page
-            location.reload();
             //this.close();
         },
         async signup(){
@@ -94,9 +94,9 @@ export default {
                 cookies.set("email",this.signUp.email);
                 cookies.set("username",this.signUp.username);
                 this.close();
+                //Refresh the page
+                location.reload();
             }
-            //Refresh the page
-            location.reload();
             //this.close();
         },
         close() {

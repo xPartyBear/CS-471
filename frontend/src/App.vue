@@ -7,7 +7,7 @@ import SignUpIn from './components/SignUpIn.vue'
 
 <template>
   <header>
-    <NavBar @sign-up="toggleSignUp()"/>
+    <NavBar @refresh="refresh()" @sign-up="toggleSignUp()"/>
   </header>
   <br>
   <br>
@@ -48,6 +48,9 @@ import SignUpIn from './components/SignUpIn.vue'
       },
       toggleSignUp(){
         this.signUpEnabled = !this.signUpEnabled;
+      },
+      refresh(){
+        location.reload();
       }
     }
   }
