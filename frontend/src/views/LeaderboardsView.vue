@@ -130,15 +130,16 @@ export default {
         font-size: 16px;
         cursor: pointer;
         border: none;
-        background-color: #007bff;
+        background-color: gray;
         color: white;
         border-radius: 5px;
     }
     .header button:hover {
-        background-color: #0056b3;
+        background-color: lightgray;
     }
     .content {
         text-align: center;
+        font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
     }
     .box {
         border: 1px solid #ddd;

@@ -176,7 +176,7 @@ import pokemon from '../../services/pokemon.js'
         }
         .check:hover {
             cursor: pointer;
-            background-color: white;
+            background-color: lightgray;
             color: lightgray;
             border: 2px inset lightgray;
             transition: all .3s ease;
