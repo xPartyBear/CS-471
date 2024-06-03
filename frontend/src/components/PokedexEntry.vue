@@ -68,6 +68,11 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                 let day = fullDate.getDate();
                 let month = fullDate.getMonth() + 1;
                 let year = fullDate.getFullYear();
+                if(this.$route.params.month != null && this.$route.params.day != null && this.$route.params.year != null) {
+                    this.pastPuzzleBeingPlayed = true;
+                    return `${this.$route.params.month}-${this.$route.params.day}-${this.$route.params.year}`;
+                }
+                this.pastPuzzleBeingPlayed = false;
                 return `${month}-${day}-${year}`;
             },
             async reveal(value,scoreEffected=true){
@@ -77,7 +82,7 @@ import MysteryImg from  './../assets/mystery_symbol.png';
                     return;
                 }
                 //get the pokedexInfo for that value
-                const currentDate = this.date();
+                const currentDate = pokemon.get_date(this.$route.params);
                 const res = await pokemon.get_poke_info(currentDate,value);
                 if(scoreEffected){
                     this.$emit('reveal');

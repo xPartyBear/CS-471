@@ -1,3 +1,8 @@
+<script setup>
+import Leaderboard from "../components/Leaderboard.vue";
+
+</script>
+
 <template>
     <div>
         <br>
@@ -51,14 +56,7 @@
             </div>
         </div>
         <div class="content" v-if="leaderboardType==5">
-            <h1>Streak</h1>
-            <div class="box-container">
-                <div class="box" v-text="streak.first"></div>
-                <div class="box" v-text="streak.second"></div>
-                <div class="box" v-text="streak.third"></div>
-                <div class="box" v-text="streak.fourth"></div>
-                <div class="box" v-text="streak.fifth"></div>
-            </div>
+            <Leaderboard category="streaks"></Leaderboard>
         </div>
     </div>
 </template>
@@ -146,6 +144,8 @@ export default {
         margin: 5px;
         border-radius: 5px;
         background-color: #f9f9f9;
+        cursor: pointer;
+        user-select: none;
     }
     .box-container {
         display: flex;

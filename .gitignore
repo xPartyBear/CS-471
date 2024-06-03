@@ -2,3 +2,4 @@
 /backend/.backend_env
 /.idea/*
 .database_env
+./backend/__pycache__/*

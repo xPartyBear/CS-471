@@ -12,5 +12,17 @@ export default {
     },
     get_pokemon(date){
         return requests().post('/get-pokemon',{date})
+    },
+    get_date(params){
+        const fullDate = new Date();
+        let day = fullDate.getDate();
+        let month = fullDate.getMonth() + 1;
+        let year = fullDate.getFullYear();
+        if(params.month != null && params.day != null && params.year != null) {
+            this.pastPuzzleBeingPlayed = true;
+            return `${params.month}-${params.day}-${params.year}`;
+        }
+        this.pastPuzzleBeingPlayed = false;
+        return `${month}-${day}-${year}`;
     }
 } 

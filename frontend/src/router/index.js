@@ -10,6 +10,11 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/:month/:day/:year',
+      name: 'pastPuzzle',
+      component: HomeView
+    },
+    {
       path: '/past-puzzles',
       name: 'past-puzzles',
       component: () => import('../views/PastPuzzlesView.vue'),

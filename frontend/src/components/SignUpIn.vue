@@ -16,7 +16,8 @@
       <input v-model='logIn.password' type="password" class="horizontal-center"/>
       <br/>
       <br/>
-
+      <p class="red">{{response}}</p>
+      <br>
       <div class="horizontal-center">
         <button @click="login()" type="submit">Login</button>
       </div>
@@ -41,7 +42,8 @@
       <input v-model='signUp.password' type="password" class="horizontal-center"/>
       <br/>
       <br/>
-
+      <p class="red">{{response}}</p>
+      <br>
       <div class="horizontal-center">
         <button @click="signup()" type="submit">Sign Up</button>
       </div>
@@ -67,7 +69,8 @@ export default {
             logIn: {
                 email: '',
                 password: ''
-            }
+            },
+            response: ''
         }
     },
     methods: {
@@ -82,21 +85,29 @@ export default {
                 this.close();
                 //Refresh the page
                 location.reload();
+                return;
             }
+            console.log(res.data);
+            this.response = res.data.data;
             //this.close();
         },
         async signup(){
             //check if the sign up is valid
             const { cookies } = useCookies();
             const res = await account.signup(this.signUp.email,this.signUp.username,this.signUp.password);
-            console.log(res);
+            //console.log(res);
             if(res.data.res == 'Passed'){
                 cookies.set("email",this.signUp.email);
                 cookies.set("username",this.signUp.username);
                 this.close();
                 //Refresh the page
                 location.reload();
+                return;
             }
+            console.log(res.data);
+            this.response = res.data.data;
+
+            
             //this.close();
         },
         close() {
@@ -104,6 +115,7 @@ export default {
         },
         toggleAccountCreation(){
             this.isSignIn = !this.isSignIn;
+            this.response = '';
         }
     }
 }
@@ -118,5 +130,10 @@ export default {
 }
 .form {
   display: block;
+}
+
+.red {
+  color: red;
+  text-align: center;
 }
 </style>

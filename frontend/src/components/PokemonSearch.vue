@@ -12,10 +12,10 @@ import pokemon from '../../services/pokemon.js'
             <div class="bg" @click="isSearching=!isSearching"></div>
             <input class="search-bar" v-model="searchedPokemon" type="text" placeholder="Search for a Pokemon..." >
             <div class="options">
+                <p v-if="isRequesting">Searching</p>
                 <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
                     <PokemonSearchElement :pokemonImg="option.imgSrc[0].default">{{option.name}}</PokemonSearchElement>
                 </ul>
-                <p v-if="isRequesting">Searching</p>
             </div>
         </div>
         <button :disabled="!guessEnabled" v-if="!isSearching" @click="guessPokemon" class="check">Check</button>
