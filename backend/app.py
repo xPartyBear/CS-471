@@ -44,6 +44,32 @@ def dex(dex_num, attribute=None):
         return pokemon_json[attribute]
     return pokemon_json
 
+
+@app.route('/get-pokemon',methods=['POST'])
+def get_pokemon():
+    data = request.get_json()
+    date = data['date']
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    cur.execute(f'''SELECT pokedex_num FROM {constants.PUZZLE_TABLE} WHERE game_date=TO_DATE(%s,'MM-DD-YYYY');''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+    dex_num = res[0]
+    print(dex_num)
+    simple_data = pypokedex.get(dex=int(dex_num))
+    finalRes = {"name": simple_data.name, "imgSrc": simple_data.sprites[0]['default']}
+    print(finalRes)
+    return finalRes
+
+
 @app.route("/filter_mons",methods=['POST'])
 def filter_dex():
     data = request.get_json()
@@ -54,6 +80,55 @@ def filter_dex():
     filtered = list(filter(lambda i: f.lower() in i.lower(),complete_pokedex))
     res = [{'name': i, 'imgSrc':pypokedex.get(name=i).sprites} for i in filtered]
     return {'result':res}
+
+@app.route("/get_info",methods=['POST'])
+def get_info():
+    data=request.get_json()
+    date=data['date']
+    info=data['info']
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+
+    cur.execute(f'''SELECT {info} FROM {constants.PUZZLE_TABLE} WHERE game_date=TO_DATE(%s,'MM-DD-YYYY');''', (date,))
+
+    res = cur.fetchone()
+
+    cur.close()
+    db.close()
+
+    return res[0]
+
+@app.route('/guess_pokemon',methods=['POST'])
+def guess_pokemon():
+    failedToFetch = False
+    data=request.get_json()
+    date=data['date']
+    guess=data['guessName']
+    pokemon = pypokedex.get(name=guess)
+    dex = pokemon.dex
+    print(dex)
+
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE} WHERE game_date = TO_DATE(%s,'MM-DD-YYYY') AND pokedex_num = {dex};''', (date,))
+
+    res = cur.fetchone()
+    print(res)
+
+    cur.close()
+    db.close()
+    return {"res":( not res==None)}
+ 
 
 
 @app.route("/get_db", methods=['GET'])
@@ -106,7 +181,7 @@ if __name__ == "__main__":
                                                                          email varchar(100),
                                                                          last_played date);''')
 
-    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date,
+    cur.execute(f'''CREATE TABLE IF NOT EXISTS {constants.PUZZLE_TABLE} (game_date date DEFAULT CURRENT_DATE,
                                                                          pokedex_num integer, 
                                                                          type1 varchar(100),
                                                                          type2 varchar(100),

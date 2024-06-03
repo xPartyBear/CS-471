@@ -7,7 +7,7 @@ import SignUpIn from './components/SignUpIn.vue'
 
 <template>
   <header>
-    <NavBar @sign-up="toggleSignUp()" />
+    <NavBar @refresh="refresh()" @sign-up="toggleSignUp()"/>
   </header>
   <br />
   <br />
@@ -38,17 +38,20 @@ export default {
     }
   },
   methods: {
-    async test() {
+    async test(){
       //This is an example of communication for the process
       let res = await ping.ping({
-        data: 'test'
+        "data": 'test'
       })
-      this.output += res.data
+      this.output += res.data;
     },
-    toggleSignUp() {
-      this.signUpEnabled = !this.signUpEnabled
+    toggleSignUp(){
+      this.signUpEnabled = !this.signUpEnabled;
+    },
+    refresh(){
+      location.reload();
     }
-  }
+  },
 }
 </script>
 

@@ -71,40 +71,41 @@ export default {
       }
     }
   },
-  methods: {
-    async login() {
-      //check if the login is valid
-      const { cookies } = useCookies()
-      const res = await account.login(this.logIn.email, this.logIn.password)
-      console.log(res)
-      if (res.data.res == 'Passed') {
-        cookies.set('email', this.logIn.email)
-        cookies.set('username', res.data.username)
-        this.close()
-      }
-      //this.close();
-    },
-    async signup() {
-      //check if the sign up is valid
-      const { cookies } = useCookies()
-      const res = await account.signup(
-        this.signUp.email,
-        this.signUp.username,
-        this.signUp.password
-      )
-      console.log(res)
-      if (res.data == 'Account Created!') {
-        cookies.set('email', this.signUp.email)
-        cookies.set('username', this.signIn.username)
-        this.close()
-      }
-      //this.close();
-    },
-    close() {
-      this.$emit('close')
-    },
-    toggleAccountCreation() {
-      this.isSignIn = !this.isSignIn
+    methods: {
+        async login(){
+            //check if the login is valid
+            const { cookies } = useCookies();
+            const res = await account.login(this.logIn.email,this.logIn.password);
+            console.log(res);
+            if(res.data.res == "Passed") {
+                cookies.set("email", this.logIn.email);
+                cookies.set("username",res.data.username);
+                this.close();
+                //Refresh the page
+                location.reload();
+            }
+            //this.close();
+        },
+        async signup(){
+            //check if the sign up is valid
+            const { cookies } = useCookies();
+            const res = await account.signup(this.signUp.email,this.signUp.username,this.signUp.password);
+            console.log(res);
+            if(res.data.res == 'Passed'){
+                cookies.set("email",this.signUp.email);
+                cookies.set("username",this.signUp.username);
+                this.close();
+                //Refresh the page
+                location.reload();
+            }
+            //this.close();
+        },
+        close() {
+            this.$emit('close');
+        },
+        toggleAccountCreation(){
+            this.isSignIn = !this.isSignIn;
+        }
     }
   }
 }

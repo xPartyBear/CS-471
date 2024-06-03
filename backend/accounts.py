@@ -20,6 +20,7 @@ def login(request):
     cur = db.cursor()
     cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE email = %s''', (email,))
     account = cur.fetchone()
+    print (account)
     cur.close()
     db.close()
     try:
@@ -30,8 +31,9 @@ def login(request):
 
     if verify_pass:
         # say they logged in successfully and give them their username
+        # should send them a session id or something but whatever
         return jsonify(res="Passed", username=account[1])
-    return "Wrong password!"
+    return jsonify(res="Failed", data="Wrong password!")
 
 
 def signup(request):
@@ -59,13 +61,13 @@ def signup(request):
             db.commit()
             cur.close()
             db.close()
-            return "Account Created!"
+            return jsonify(res="Passed", data="Account Created")
         cur.close()
         db.close()
-        return "User already exists!"
+        return jsonify(res="Failed", data="Account Already Exists")
     except psycopg2.Error as e:
         print(e)
-        return "Error signing up"
+        return jsonify(res="Failed", data="Error Signing Up")
 
 
 def password_reset(request):
