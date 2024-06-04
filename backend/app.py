@@ -46,13 +46,11 @@ def get_leaderboard(leaderboard_type):
 
     if leaderboard_type == "daily":
         for user in res:
-            scores[user[0]] = int(user[4])  # Most recent score
-            # scores[user[0]] = int(user[5])  # Highest score
+            scores[user[0]] = int(user[4])  # Daily score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     elif leaderboard_type == "lifetime":
         for user in res:
-            # scores[user[0]] = int(user[4])  # Most recent score
-            scores[user[0]] = int(user[5])  # Highest score
+            scores[user[0]] = int(user[5])  # Lifetime score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
     return jsonify(leaderboard[:10])
@@ -234,8 +232,8 @@ if __name__ == "__main__":
                                                                             last_game_played date, 
                                                                             current_streak integer,
                                                                             longest_streak varchar(100),
-                                                                            recent_score varchar(100),
-                                                                            highest_score varchar(100));''')
+                                                                            daily_score varchar(100),
+                                                                            lifetime_score varchar(100));''')
 
     # commit the changes
     db.commit()
