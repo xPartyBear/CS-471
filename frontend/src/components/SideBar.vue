@@ -46,58 +46,70 @@ export default {
 </script>
 
 <style scoped>
-.tab {
-  float: right;
-  background: lightgray;
-  width: 64px;
-  height: 64px;
-  top: 0px;
-  right: 0px;
+    .tab{
+        float : right;
+        background: rgb(255, 220, 220);
+        border-left: solid rgb(156,100,100) 4px;
+        border-top: solid rgb(156,100,100) 4px;
+        border-bottom: solid rgb(156,100,100) 4px;
+        box-shadow: 5px 5px 5px rgb(156,100,100);
+        width: 64px;
+        height: 64px;
+        top:0px;
+        right:0px;
 
-  position: fixed;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-.tab:hover {
-  cursor: pointer;
-}
-.sideBar {
-  display: flex;
-  direction: column;
-  height: 100%;
-  background-color: gray;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  width: 25%;
-  border-bottom-left-radius: 16px;
-}
-.open {
-  right: 100%;
-  position: absolute;
-}
-.content {
-  margin: 0;
-  position: absolute;
-  width: 100%;
-}
-.title {
-  position: absolute;
-  width: 100%;
-  height: 64px;
-  background-color: lightgrey;
-  border-bottom-right-radius: 16px;
-}
-.footer {
-  bottom: 0;
-  position: fixed;
-  padding: 8px;
-  width: 100%;
-  background-color: lightgray;
-  border-bottom-left-radius: 8px;
-  height: 64px;
-}
+        position: fixed;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .tab:hover {
+        cursor: pointer;
+    }
+    .sideBar {
+        display: flex;
+        direction: column;
+        height: 100%;
+        background-color: rgb(255, 220, 220);
+        border-left: solid rgb(156,100,100) 4px;
+        border-bottom: solid rgb(156,100,100) 4px;
+        position: fixed;
+        right:0;
+        top: 0;
+        z-index: 1;
+        width: 25%;
+        border-bottom-left-radius: 16px;
+    }
+    .open {
+        right: 100%;
+        position: absolute;
+    }
+    .content {
+        margin: 0;
+        position: absolute;
+        width: 100%;
+    }
+    .title {
+        position: absolute;
+        width: 100%;
+        height: 64px;
+        background-color: rgb(255, 220, 220);
+        border-top: solid rgb(156,100,100) 4px;
+        border-right: solid rgb(156,100,100) 4px;
+        border-bottom-right-radius: 16px;
+        font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 21px 0;
+    }
+    .footer {
+        bottom: 0;
+        position: fixed;
+        padding: 8px;
+        width: 100%;
+        background-color: lightgray;
+        border-bottom-left-radius: 8px;
+        height:64px
+    }
 
 .v-enter-active,
 .v-leave-active {

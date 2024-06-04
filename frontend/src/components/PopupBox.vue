@@ -21,26 +21,27 @@ export default {
 </script>
 
 <style scoped>
-.window {
-  z-index: 3;
-  width: 35%;
-  height: 45%;
-  background-color: lightgray;
-  position: absolute;
-  display: table;
-  left: 30%;
-  top: 30%;
-  border-radius: 16px;
-  box-shadow: 0px 4px 4px 0px gray;
-}
-.bg {
-  background-color: gray;
-  opacity: 50%;
-  position: fixed;
-  width: 100%;
-  height: 100%;
+    .window {
+        z-index: 3;
+        width: 35%;
+        height: 45%;
+        background-color: rgb(255, 220, 220);
+        border: solid rgb(156,100,100) 4px;
+        position: absolute;
+        display: table;
+        left: 30%;
+        top: 30%;
+        border-radius: 16px;
+        box-shadow: 0px 4px 4px 0px gray;
+    }
+    .bg {
+        background-color: gray;
+        opacity: 50%;
+        position: fixed;
+        width: 100%;
+        height: 100%;
 
-  z-index: 3;
+      z-index: 3;
 }
 .modal {
   position: fixed;

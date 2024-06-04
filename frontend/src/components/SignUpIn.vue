@@ -6,49 +6,55 @@
   <div>
     <!--Sign in window-->
     <PopupBox v-if="isSignIn" @close="close()">
-      <h1 style="text-align: center">Log in</h1>
 
-      <p style="text-align: center">Email:</p>
-      <input v-model="logIn.email" type="text" class="horizontal-center" />
-      <br />
-      <p style="text-align: center">Password:</p>
-      <input v-model="logIn.password" type="password" class="horizontal-center" />
-      <br />
-      <br />
+      
+      <h1 style="text-align: center; font-family: 'Arial';">Log in</h1>
+
+      <p style="text-align: center; font-family: 'Arial';">Email: </p>
+      <input v-model="logIn.email" type="text" class="horizontal-center"/>
+      <br/>
+      <p style="text-align: center; font-family: 'Arial';">Password: </p>
+      <input v-model='logIn.password' type="password" class="horizontal-center"/>
+      <br/>
+      <br/>
+
 
       <div class="horizontal-center">
         <button @click="login()" type="submit">Login</button>
       </div>
       <br />
 
-      <p style="text-align: center">
-        No account? <button type="submit" @click="toggleAccountCreation()">Sign Up</button>
-      </p>
+
+
+      <p style="text-align:center; font-family: 'Arial';">No account? <button type="submit" @click="toggleAccountCreation()">Sign Up</button></p>
+
     </PopupBox>
 
     <!--Sign up window-->
     <PopupBox v-if="!isSignIn" @close="close()">
-      <h1 style="text-align: center">Sign Up</h1>
 
-      <p style="text-align: center">Email:</p>
-      <input v-model="signUp.email" type="text" class="horizontal-center" />
-      <br />
-      <p style="text-align: center">Username:</p>
-      <input v-model="signUp.username" type="text" class="horizontal-center" />
-      <br />
-      <p style="text-align: center">Password:</p>
-      <input v-model="signUp.password" type="password" class="horizontal-center" />
-      <br />
-      <br />
+      
+      <h1 style="text-align: center; font-family: 'Arial';">Sign Up</h1>
+
+      <p style="text-align: center; font-family: 'Arial';">Email: </p>
+      <input v-model='signUp.email' type="text" class="horizontal-center"/>
+      <br/>
+      <p style="text-align: center; font-family: 'Arial';">Username: </p>
+      <input v-model='signUp.username' type="text" class="horizontal-center"/>
+      <br/>
+      <p style="text-align: center; font-family: 'Arial';">Password: </p>
+      <input v-model='signUp.password' type="password" class="horizontal-center"/>
+      <br/>
+      <br/>
 
       <div class="horizontal-center">
         <button @click="signup()" type="submit">Sign Up</button>
       </div>
       <br />
 
-      <p style="text-align: center">
-        Have an account? <button type="link" @click="toggleAccountCreation()">Sign In</button>
-      </p>
+
+      <p style="text-align:center; font-family: 'Arial';">Have an account? <button type="link" @click="toggleAccountCreation()">Sign In</button></p>
+
     </PopupBox>
   </div>
 </template>

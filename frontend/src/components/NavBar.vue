@@ -75,30 +75,34 @@ import BannerLogoImg from './../assets/banner2.png'
 </script>
 
 <style scoped>
-.header {
-  background-color: rgb(255, 244, 194);
-  float: left;
-  position: fixed;
-  width: 100%;
-  margin: 0px;
-  height: 64px;
-  display: block;
-  z-index: 1;
-}
-.pageLink {
-  display: block;
-}
-.link {
-  display: block;
-  text-decoration: none;
-  user-select: none;
-  color: black;
-  margin: 0;
-  height: 100%;
-}
-.title {
-  text-align: center;
-  left: 50%;
-  font-size: 32px;
-}
+    .header {
+        background-color: white;
+        box-shadow: 0px 5px 5px lightgray;
+        float: left;
+        position: fixed;
+        width: 100%;
+        margin: 0px;
+        height: 64px;
+        display: block;
+        z-index: 1;
+    }
+    .pageLink {
+        display: block;
+    }
+    .link {
+        display: block; 
+        text-decoration: none;
+        user-select:none;
+        color: black;
+        margin: 0;
+        height: 100%;
+    }
+    .title {
+        text-align: center;
+        left: 50%;
+        font-size: 32px;
+    }
+
+
 </style>
+
