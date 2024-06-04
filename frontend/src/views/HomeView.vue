@@ -12,11 +12,10 @@
     <PokemonSearch @guess="guess" :guessEnabled="!isSearchDisabled()"></PokemonSearch>
     <br>
     <br>
-    <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <div class="points">Current Score: {{stats.points}}</div>
+    <div id="score">Current Score: {{stats.points}}</div>
     <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
-    <div class="footer">Date: {{pokemon.get_date($route.params)}}</div>
+    <div class="date">Date: {{pokemon.get_date($route.params)}}</div>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
       <div class="center"> 
         <h1>{{isRight?"You win!":"You Lose!"}}</h1>
@@ -141,16 +140,13 @@ export default {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-<<<<<<<<< Temporary merge branch 1
     height: 100%;
   }
-  .footer {
+  .date {
     margin: auto;
     bottom: 95%;
     text-align: center;
-    font-family: 'Courier New', Courier, monospace;
-=========
->>>>>>>>> Temporary merge branch 2
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
   }
   .center{
     text-align: center;

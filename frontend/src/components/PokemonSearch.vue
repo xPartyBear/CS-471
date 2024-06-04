@@ -14,7 +14,7 @@ import pokemon from '../../services/pokemon.js'
             <div class="options">
                 <p v-if="isRequesting">Searching</p>
                 <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
-                    <PokemonSearchElement :pokemonImg="option.imgSrc[0].default">{{option.name}}</PokemonSearchElement>
+                    <PokemonSearchElement :pokemonImg="option.imgSrc">{{option.name}}</PokemonSearchElement>
                 </ul>
             </div>
         </div>

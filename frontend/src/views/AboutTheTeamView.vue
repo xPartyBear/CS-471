@@ -1,5 +1,9 @@
 <template>
   <section class="team-member">
+    <br>
+    <br>
+    <br>
+    <h1>About the Team</h1>
     <div v-for="(member, index) in teamMembers" :key="index" class="member-profile">
       <h2>{{ member.name }}</h2>
       <p>Email: {{ member.email }}</p>
@@ -56,10 +60,15 @@ export default {
 
 <style scoped>
 .team-member {
+  text-align: center;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 20px;
+  position: absolute;
+  left: 40%;
+  flex-direction: column;
+  margin: 0;
 }
 
 .member-profile {

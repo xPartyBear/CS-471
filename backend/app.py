@@ -8,12 +8,47 @@ import accounts
 import requests as r
 from flask import jsonify
 
+import time
+
+import os
+import json
+
 app = Flask(__name__)
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-complete_pokedex = [i['name'] for i in r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']]
+def get_img(name):
+    print(f'''finding pokedex image for {name}''')
+    data = pypokedex.get(name=name)
+    return '' if data.sprites[0]['default'] == None else data.sprites[0]['default']
 
+complete_pokedex = []
+dex_path = './dex_data.json'
+if not os.path.exists(dex_path):
+    json_data = r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']
+    restart = 0
+    while(restart < len(json_data)):
+        for i in range(restart,len(json_data)):
+            try:
+                complete_pokedex.append({"name": json_data[i]['name'], "imgSrc":get_img(json_data[i]['name'])})
+            except:
+                print(f'''pypokedex stalled on {json_data[i]['name']} pokedex image''')
+                time.sleep(1)
+                restart = i
+                break
+        if(i >= len(json_data)-1):
+            restart = i + 1
+            break
+    # complete_pokedex = [{"name": i['name'], "imgSrc":get_img(i['name'])} for i in json_data]
+    f = open(dex_path, 'w+')
+    f.write(json.dumps(complete_pokedex))
+    f.close()
+else: 
+    f = open(dex_path, 'r')
+    complete_pokedex = json.loads(f.read())
+    f.close()
+
+print('pokedex loading complete!')
 
 @app.route("/")
 def hello_world():
@@ -144,6 +179,7 @@ def get_pokemon():
     return finalRes
 
 
+
 @app.route("/filter_mons", methods=['POST'])
 def filter_dex():
     data = request.get_json()
@@ -151,9 +187,8 @@ def filter_dex():
     if (f == ''):
         return {'result': []}
     # need to manually get all the pokemon informtion using this command
-    filtered = list(filter(lambda i: f.lower() in i.lower(), complete_pokedex))
-    res = [{'name': i, 'imgSrc': pypokedex.get(name=i).sprites} for i in filtered]
-    return {'result': res}
+    filtered = list(filter(lambda i: f.lower() in i['name'].lower(), complete_pokedex))
+    return {'result': filtered}
 
 
 @app.route("/get_info", methods=['POST'])
