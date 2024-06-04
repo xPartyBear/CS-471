@@ -6,19 +6,17 @@ import VueCookies from 'vue3-cookies'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(router);
+app.use(router)
 
 globalCookiesConfig({
-    expireTimes: "30d",
-    path: "/",
-    domain: "",
-    secure: true,
-    sameSite: "None",
-});
-app.use(VueCookies);
+  expireTimes: '30d',
+  path: '/',
+  domain: '',
+  secure: true,
+  sameSite: 'None'
+})
+app.use(VueCookies)
 
-
-
-app.mount('#app');
+app.mount('#app')

@@ -6,6 +6,7 @@
   <div>
     <!--Sign in window-->
     <PopupBox v-if="isSignIn" @close="close()">
+
       
       <h1 style="text-align: center; font-family: 'Arial';">Log in</h1>
 
@@ -21,14 +22,17 @@
       <div class="horizontal-center">
         <button @click="login()" type="submit">Login</button>
       </div>
-      <br/>
+      <br />
+
+
 
       <p style="text-align:center; font-family: 'Arial';">No account? <button type="submit" @click="toggleAccountCreation()">Sign Up</button></p>
-    </PopupBox>
 
+    </PopupBox>
 
     <!--Sign up window-->
     <PopupBox v-if="!isSignIn" @close="close()">
+
       
       <h1 style="text-align: center; font-family: 'Arial';">Sign Up</h1>
 
@@ -47,9 +51,11 @@
       <div class="horizontal-center">
         <button @click="signup()" type="submit">Sign Up</button>
       </div>
-      <br/>
+      <br />
+
 
       <p style="text-align:center; font-family: 'Arial';">Have an account? <button type="link" @click="toggleAccountCreation()">Sign In</button></p>
+
     </PopupBox>
   </div>
 </template>
@@ -118,11 +124,12 @@ export default {
             this.response = '';
         }
     }
+  }
 }
 </script>
 
 <style scoped>
-.horizontal-center{
+.horizontal-center {
   margin: 0;
   position: absolute;
   left: 50%;

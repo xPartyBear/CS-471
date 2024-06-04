@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       displaySharePopup: false,
       maxGuesses: 7,
@@ -128,7 +128,7 @@ export default {
       return ""
     },
     getPoints: () => {
-      return "5000"
+      return '5000'
     },
     getStreak: () => {
         return "7"

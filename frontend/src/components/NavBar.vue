@@ -1,8 +1,8 @@
 <script setup>
-import {RouterLink} from 'vue-router';
-import SideBar from './SideBar.vue';
-import MenuLink from './MenuLink.vue';
-import { useCookies } from 'vue3-cookies';
+import { RouterLink } from 'vue-router'
+import SideBar from './SideBar.vue'
+import MenuLink from './MenuLink.vue'
+import { useCookies } from 'vue3-cookies'
 import BannerTextImg from './../assets/banner1.png'
 import BannerLogoImg from './../assets/banner2.png'
 </script>
@@ -15,7 +15,8 @@ import BannerLogoImg from './../assets/banner2.png'
                 <MenuLink icon="../../public/calendar-alt.png"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
                 <MenuLink icon="../../public/award.png"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
                 <MenuLink icon="../../public/smile.png"  v-if="isSignedIn"><RouterLink class="link" to="/accounts">My Account</RouterLink></MenuLink>
-                <menuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</menuLink>
+                <MenuLink icon="../src/assets/info-circle.png"><RouterLink class="link" to="/about">About The Team</RouterLink></MenuLink>
+                <MenuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</MenuLink>
                 <MenuLink icon="../../public/signin.png" v-if="!isSignedIn" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
@@ -69,7 +70,7 @@ import BannerLogoImg from './../assets/banner2.png'
                 }
                 return ''
             },
-        }
+       }
     }
 </script>
 
@@ -104,3 +105,4 @@ import BannerLogoImg from './../assets/banner2.png'
 
 
 </style>
+
