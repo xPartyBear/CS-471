@@ -16,7 +16,7 @@ import BannerLogoImg from './../assets/banner2.png'
                 <MenuLink icon="../../public/award.png"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
                 <MenuLink icon="../../public/smile.png"  v-if="isSignedIn"><RouterLink class="link" to="/accounts">My Account</RouterLink></MenuLink>
                 <MenuLink icon="../src/assets/info-circle.png"><RouterLink class="link" to="/about">About The Team</RouterLink></MenuLink>
-                <menuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</menuLink>
+                <MenuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</MenuLink>
                 <MenuLink icon="../../public/signin.png" v-if="!isSignedIn" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>

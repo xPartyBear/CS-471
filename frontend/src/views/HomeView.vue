@@ -14,7 +14,7 @@
     <br>
     <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    current score: {{stats.points}}
+    <div class="points">Current Score: {{stats.points}}</div>
     <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
     <div class="footer">Date: {{pokemon.get_date($route.params)}}</div>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
@@ -140,7 +140,17 @@ export default {
   .Home {
     margin-left: auto;
     margin-right: auto;
-    width: 50%
+    width: 50%;
+<<<<<<<<< Temporary merge branch 1
+    height: 100%;
+  }
+  .footer {
+    margin: auto;
+    bottom: 95%;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+=========
+>>>>>>>>> Temporary merge branch 2
   }
   .center{
     text-align: center;
@@ -155,10 +165,5 @@ export default {
     font-weight: bolder;
     color: rgb(156,100,100);
     font-size: 20px;
-  }
-  .points {
-    text-align: center;
-    font-size: 18px;
-    font-family: 'Courier New', Courier, monospace;
   }
 </style>
