@@ -14,7 +14,7 @@
     <br>
     <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <div class="points">Current Score: {{stats.points}}</div>
+    current score: {{stats.points}}
     <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
     <div class="footer">Date: {{pokemon.get_date($route.params)}}</div>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       displaySharePopup: false,
       maxGuesses: 7,
@@ -62,7 +62,6 @@ export default {
     toggleShare(){
       //For now this is what it will do
       this.displaySharePopup = !this.displaySharePopup;
-      //Disable Plays for the day
       return;
     },
     async guess(value){
@@ -127,7 +126,7 @@ export default {
       return ""
     },
     getPoints: () => {
-      return "5000"
+      return '5000'
     },
     getStreak: () => {
         return "7"
@@ -141,21 +140,21 @@ export default {
   .Home {
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    height: 100%;
-  }
-  .footer {
-    margin: auto;
-    bottom: 95%;
-    text-align: center;
-    font-family: 'Courier New', Courier, monospace;
+    width: 50%
   }
   .center{
     text-align: center;
   }
   .guesses{
     font-size: 18px;
-    text-align:center;
+    text-align: center;
+  }
+  #score {
+    text-align: center;
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+    font-weight: bolder;
+    color: rgb(156,100,100);
+    font-size: 20px;
   }
   .points {
     text-align: center;
