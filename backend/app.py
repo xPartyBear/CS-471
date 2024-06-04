@@ -26,8 +26,9 @@ def get_daily(day):
     return "To get daily Pokemon for " + day
 
 
-@app.route("/get_leaderboard/<leaderboard_type>")
-def get_leaderboard(leaderboard_type):
+@app.route("/get_leaderboard/<leaderboard_type>", methods=['POST'])
+@app.route("/get_leaderboard/<leaderboard_type>/<limit>", methods=['POST'])
+def get_leaderboard(leaderboard_type, limit=10):
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
                           host=constants.DATABASE_HOST,
@@ -53,7 +54,50 @@ def get_leaderboard(leaderboard_type):
             scores[user[0]] = int(user[5])  # Lifetime score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
-    return jsonify(leaderboard[:10])
+    return jsonify(leaderboard[:limit])
+
+
+@app.route("/set_leaderboard/<username>/<score>")
+def set_leaderboard(username, score):
+    db = psycopg2.connect(dbname=constants.DATABASE_NAME,
+                          user=constants.DATABASE_USER,
+                          host=constants.DATABASE_HOST,
+                          password=constants.DATABASE_PASSWORD,
+                          port=constants.DATABASE_PORT)
+    cur = db.cursor()
+    cur.execute(f'''SELECT * FROM {constants.USER_STAT_TABLE};''')
+    res = cur.fetchall()
+
+    cur.execute(f'''SELECT * FROM "{constants.USER_TABLE}" WHERE username = %s;''', (username,))
+    account = cur.fetchone()
+
+    has_stats = False
+    last_score = 0
+
+    for user_score in res:
+        if user_score[0] == account[0]:
+            has_stats = True
+            last_score = int(user_score[5])
+            break
+
+    if has_stats:
+        cur.execute(
+            f'''UPDATE "{constants.USER_STAT_TABLE}" 
+            SET daily_score = {score}, 
+            lifetime_score = {str(last_score + int(score))}
+            WHERE id = {account[0]};''')
+        db.commit()
+    else:
+        cur.execute(
+            f'''INSERT INTO "{constants.USER_STAT_TABLE}" (id, daily_score, lifetime_score) 
+            VALUES ({account[0]}, %s, %s);''',
+            (score, str(last_score + int(score)),))
+        db.commit()
+
+    cur.close()
+    db.close()
+
+    return jsonify(res="Score updated!", data={"daily_score": score, "lifetime_score": str(last_score + int(score))})
 
 
 @app.route("/get_mon/<dex_num>")
