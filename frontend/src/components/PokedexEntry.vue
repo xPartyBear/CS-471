@@ -100,7 +100,7 @@ import MysteryImg from './../assets/mystery_symbol.png'
             },
             revealAll(){
                 let keys = Object.keys(this.pokemonInfo);
-                for (i in keys){
+                for (var i in keys){
                     this.reveal(i,false);
                 }
             }
