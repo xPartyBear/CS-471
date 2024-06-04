@@ -1,21 +1,18 @@
 <template>
-    <div class="button">
-        <img :src="icon"/>
-        <div class="content">
-            <slot></slot>
-        </div>
+  <div class="button">
+    <img :src="icon" />
+    <div class="content">
+      <slot></slot>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {    
-        name: 'MenuLink',
-        props: ['icon'],
-        data(){
-
-        }
-
-    }
+export default {
+  name: 'MenuLink',
+  props: ['icon'],
+  data() {}
+}
 </script>
 
 <style scoped>
@@ -44,4 +41,3 @@
     }
 
 </style>
-

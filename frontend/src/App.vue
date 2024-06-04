@@ -9,8 +9,8 @@ import SignUpIn from './components/SignUpIn.vue'
   <header>
     <NavBar @refresh="refresh()" @sign-up="toggleSignUp()"/>
   </header>
-  <br>
-  <br>
+  <br />
+  <br />
   <!--
   <button @click="test()">
     Test
@@ -19,8 +19,7 @@ import SignUpIn from './components/SignUpIn.vue'
   -->
   <SignUpIn v-if="signUpEnabled" @close="toggleSignUp()"></SignUpIn>
   <main>
-   
-    <RouterView/>
+    <RouterView />
     <!--
       This is where the sign up box will be
 
@@ -29,38 +28,38 @@ import SignUpIn from './components/SignUpIn.vue'
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    components: [NavBar],
-    data() {
-      return {
-        output: '',
-        signUpEnabled: false,
-      }
-    },
-    methods: {
-      async test(){
-        //This is an example of communication for the process
-        let res = await ping.ping({
-          "data": 'test'
-        })
-        this.output += res.data;
-      },
-      toggleSignUp(){
-        this.signUpEnabled = !this.signUpEnabled;
-      },
-      refresh(){
-        location.reload();
-      }
+export default {
+  name: 'App',
+  components: [NavBar],
+  data() {
+    return {
+      output: '',
+      signUpEnabled: false
     }
-  }
+  },
+  methods: {
+    async test(){
+      //This is an example of communication for the process
+      let res = await ping.ping({
+        "data": 'test'
+      })
+      this.output += res.data;
+    },
+    toggleSignUp(){
+      this.signUpEnabled = !this.signUpEnabled;
+    },
+    refresh(){
+      location.reload();
+    }
+  },
+}
 </script>
 
 <style>
-  body {
-    margin: 0px;
-  }
-  main {
-    margin: 8px;
-  }
+body {
+  margin: 0px;
+}
+main {
+  margin: 8px;
+}
 </style>

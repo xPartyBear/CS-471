@@ -1,49 +1,48 @@
 <template>
-    <div class="SideBarContainer">
-        <transition>
-                <div class="sideBar" v-if="openedTab">
-                    <div v-if="openedTab" class="tab open" @click="toggleTab">
-                        <img :src="imgSrc">
-                    </div>
-                    <div style="display: block;">
-                        <div class="title">
-                            {{title}}
-                        </div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="content">
-                            <!--This is the interior content of the side bar-->
-                            <slot></slot>
-                        </div>
-                    </div>
-                </div>
-        </transition>   
-        <div class="tab" @click="toggleTab">
-            <img :src="imgSrc">
+  <div class="SideBarContainer">
+    <transition>
+      <div class="sideBar" v-if="openedTab">
+        <div v-if="openedTab" class="tab open" @click="toggleTab">
+          <img :src="imgSrc" />
         </div>
+        <div style="display: block">
+          <div class="title">
+            {{ title }}
+          </div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <div class="content">
+            <!--This is the interior content of the side bar-->
+            <slot></slot>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <div class="tab" @click="toggleTab">
+      <img :src="imgSrc" />
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'SideBar',
-        props: ['imgSrc','title'],
-        data() {
-            return {
-                openedTab: false,
-                sideBarState: '',
-
-            }
-        },  
-        methods: {
-            toggleTab(){
-                this.openedTab = !this.openedTab;
-                this.sideBarState = this.openedTab?'open':'';
-            }
-        }
+export default {
+  name: 'SideBar',
+  props: ['imgSrc', 'title'],
+  data() {
+    return {
+      openedTab: false,
+      sideBarState: ''
     }
+  },
+  methods: {
+    toggleTab() {
+      this.openedTab = !this.openedTab
+      this.sideBarState = this.openedTab ? 'open' : ''
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -112,20 +111,18 @@
         height:64px
     }
 
-    .v-enter-active,
-    .v-leave-active {
-        transition: right 0.5s ease-in-out;
-    }
-    .v-enter-from{
-        right: -25%;
-    }
-    .v-leave-to
-    {
-        right: -25%;
-    }
+.v-enter-active,
+.v-leave-active {
+  transition: right 0.5s ease-in-out;
+}
+.v-enter-from {
+  right: -25%;
+}
+.v-leave-to {
+  right: -25%;
+}
 
-    img {
-        padding: 8px;
-    }
-
+img {
+  padding: 8px;
+}
 </style>

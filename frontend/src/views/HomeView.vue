@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       displaySharePopup: false,
       maxGuesses: 7,
@@ -61,8 +61,8 @@ export default {
     },
     toggleShare(){
       //For now this is what it will do
-      this.displaySharePopup = !this.displaySharePopup;
-      return;
+      this.displaySharePopup = !this.displaySharePopup
+      return
     },
     date(){
       const fullDate = new Date();
@@ -132,7 +132,7 @@ export default {
       return ""
     },
     getPoints: () => {
-      return "5000"
+      return '5000'
     },
     getStreak: () => {
         return "7"

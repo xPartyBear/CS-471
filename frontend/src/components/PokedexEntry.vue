@@ -1,8 +1,9 @@
 <script setup>
-import pokemon from '../../services/pokemon';
-import MysteryImg from  './../assets/mystery_symbol.png';
+import { toValue } from 'vue'
+import pokemon from '../../services/pokemon'
+import PokedexImg from './../assets/pokedex.png'
+import MysteryImg from './../assets/mystery_symbol.png'
 </script>
-
 
 <template>
     <div class="container">
@@ -153,4 +154,3 @@ import MysteryImg from  './../assets/mystery_symbol.png';
     }
 
 </style>
-
