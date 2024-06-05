@@ -38,10 +38,10 @@ export default {
   },
   methods: {
     toggleTab() {
-      this.openedTab = !this.openedTab
-      this.sideBarState = this.openedTab ? 'open' : ''
+      this.openedTab = !this.openedTab;
+      this.sideBarState = this.openedTab ? 'open' : '';
     }
-  }
+  },
 }
 </script>
 

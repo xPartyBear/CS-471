@@ -24,7 +24,7 @@ export default {
     .window {
         z-index: 3;
         width: 35%;
-        height: 45%;
+        height: auto;
         background-color: rgb(255, 220, 220);
         border: solid rgb(156,100,100) 4px;
         position: absolute;

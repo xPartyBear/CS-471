@@ -1,25 +1,26 @@
+<script setup>
+import FilteredLeaderboard from "../components/FilteredLeaderboard.vue";
+
+</script>
+
 <template>
     <div>
         <br>
         <div class="header">
             <button @click="swapView(1)">Daily</button>
+            <!--
             <button @click="swapView(2)">Weekly</button>
             <button @click="swapView(3)">Yearly</button>
+            -->
             <button @click="swapView(4)">Lifetime</button>
-            <button @click="swapView(5)">Streak</button>
+            <!--<button @click="swapView(5)">Streak</button>-->
         </div>
 
 
         <div class="content" v-if="leaderboardType==1">
-            <h1>Daily</h1>
-            <div class="box-container">
-                <div class="box" v-text="daily.first"></div>
-                <div class="box" v-text="daily.second"></div>
-                <div class="box" v-text="daily.third"></div>
-                <div class="box" v-text="daily.fourth"></div>
-                <div class="box" v-text="daily.fifth"></div>
-            </div>
+            <FilteredLeaderboard category="daily"></FilteredLeaderboard>
         </div>
+        <!--
         <div class="content" v-if="leaderboardType==2">
             <h1>Weekly</h1>
             <div class="box-container">
@@ -40,25 +41,12 @@
                 <div class="box" v-text="yearly.fifth"></div>
             </div>
         </div>
+        -->
         <div class="content" v-if="leaderboardType==4">
-            <h1>Lifetime</h1>
-            <div class="box-container">
-                <div class="box" v-text="lifetime.first"></div>
-                <div class="box" v-text="lifetime.second"></div>
-                <div class="box" v-text="lifetime.third"></div>
-                <div class="box" v-text="lifetime.fourth"></div>
-                <div class="box" v-text="lifetime.fifth"></div>
-            </div>
+            <FilteredLeaderboard category="lifetime"></FilteredLeaderboard>
         </div>
         <div class="content" v-if="leaderboardType==5">
-            <h1>Streak</h1>
-            <div class="box-container">
-                <div class="box" v-text="streak.first"></div>
-                <div class="box" v-text="streak.second"></div>
-                <div class="box" v-text="streak.third"></div>
-                <div class="box" v-text="streak.fourth"></div>
-                <div class="box" v-text="streak.fifth"></div>
-            </div>
+            <FilteredLeaderboard category="streaks"></FilteredLeaderboard>
         </div>
     </div>
 </template>
@@ -140,17 +128,5 @@ export default {
     .content {
         text-align: center;
         font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
-    }
-    .box {
-        border: 1px solid #ddd;
-        padding: 20px;
-        margin: 5px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-    .box-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 </style>

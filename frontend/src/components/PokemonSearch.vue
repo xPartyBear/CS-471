@@ -6,16 +6,16 @@ import pokemon from '../../services/pokemon.js'
 <template>
     <div class="dropdown-wrapper">
         <div :disabled="!guessEnabled" v-if="!isSearching" @click="isSearching=!isSearching" class="selected-item">
-            <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img v-if="isImageValid()" class="icon" :src="selectedPokemon.imgSrc[0].default">
+            <span class="result"> Selected Pokemon: {{selectedPokemon.name}} </span><img v-if="isImageValid()" class="icon" :src="selectedPokemon.imgSrc">
         </div>
         <div v-if="isSearching" class="dropdown-popover">
             <div class="bg" @click="isSearching=!isSearching"></div>
             <input class="search-bar" v-model="searchedPokemon" type="text" placeholder="Search for a Pokemon..." >
             <div class="options">
-                <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
-                    <PokemonSearchElement :pokemonImg="option.imgSrc[0].default">{{option.name}}</PokemonSearchElement>
-                </ul>
                 <p v-if="isRequesting">Searching</p>
+                <ul class="option" v-for="option in options" @click="selectPokemon(option)" >
+                    <PokemonSearchElement :pokemonImg="option.imgSrc">{{option.name}}</PokemonSearchElement>
+                </ul>
             </div>
         </div>
         <button :disabled="!guessEnabled" v-if="!isSearching" @click="guessPokemon" class="check">Check</button>

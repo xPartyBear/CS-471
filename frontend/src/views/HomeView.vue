@@ -3,6 +3,8 @@
   import PopupBox from '../components/PopupBox.vue';
   import PokedexEntry from '../components/PokedexEntry.vue';
   import pokemon from '../../services/pokemon.js';
+  import leaderboard from '../../services/leaderboard.js';
+  import {useCookies} from 'vue3-cookies';
 </script>
 
 <template>
@@ -12,24 +14,22 @@
     <PokemonSearch @guess="guess" :guessEnabled="!isSearchDisabled()"></PokemonSearch>
     <br>
     <br>
-    <br>
     <div class="guesses" v-text="getGuesses()"></div>
-    <br>
-    <div id="score">current score: {{stats.points}}</div>
+    <div id="score">Current Score: {{stats.points}}</div>
     <PokedexEntry @reveal="modifyScore(100)"></PokedexEntry>
+    <div class="date">Date: {{pokemon.get_date($route.params)}}</div>
     <PopupBox v-if="displaySharePopup" @close="toggleShare()">
       <div class="center"> 
         <h1>{{isRight?"You win!":"You Lose!"}}</h1>
         <img :src="todaysPokeImg" :alt="todaysPokemon">
         <br>
-        {{todaysPokemon}}
+        Today's Pokemon: {{todaysPokemon}}
         <h3>Guesses:</h3>
         <p v-text="stats.guesses"></p>
         <h3>Points:</h3>
         <p v-text="stats.points"></p>
         <h3>Streak:</h3>
         <p v-text="stats.streak"></p>
-
         <button @click="copyScore()" id="copy" style="margin-bottom: auto">Copy score</button>
       </div>
     </PopupBox>
@@ -51,7 +51,8 @@ export default {
       },
       minimumScore: 0,
       todaysPokeImg: '',
-      todaysPokemon: ''
+      todaysPokemon: '',
+      pastPuzzleBeingPlayed: false
     }
   },
   methods: {
@@ -61,40 +62,43 @@ export default {
     },
     toggleShare(){
       //For now this is what it will do
-      this.displaySharePopup = !this.displaySharePopup
-      return
-    },
-    date(){
-      const fullDate = new Date();
-      let day = fullDate.getDate();
-      let month = fullDate.getMonth() + 1;
-      let year = fullDate.getFullYear();
-      return `${month}-${day}-${year}`;
+      this.displaySharePopup = !this.displaySharePopup;
+      return;
     },
     async guess(value){
       //Desired Pokemon will need to be fetched
-      const res = await pokemon.guess_pokemon(this.date(),value);
+      const res = await pokemon.guess_pokemon(pokemon.get_date(this.$route.params),value);
       this.currentGuesses++;
       console.log(res.data);
       if(res.data.res){
         //Call guesses here to check if they are correct
         this.isRight = true;
         this.toggleShare();
-        const todaysPokemon = await pokemon.get_pokemon(this.date());
+        const todaysPokemon = await pokemon.get_pokemon(pokemon.get_date(this.$route.params));
         console.log(todaysPokemon);
         this.todaysPokemon = todaysPokemon.data.name;
         this.todaysPokeImg = todaysPokemon.data.imgSrc;
+        const { cookies } = useCookies();
+        if(cookies.get('username') != '') {
+          await leaderboard.set_leaderboard(cookies.get('username'),this.stats.points);
+        }
       }
       else{
         this.modifyScore(50);
         if(this.currentGuesses >= this.maxGuesses){
-          const todaysPokemon = await pokemon.get_pokemon(this.date());
+          const todaysPokemon = await pokemon.get_pokemon(pokemon.get_date(this.$route.params));
+          this.stats.points = 0;
           console.log(todaysPokemon);
           this.todaysPokemon = todaysPokemon.data.name;
           this.todaysPokeImg = todaysPokemon.data.imgSrc;
           this.toggleShare();
+          const { cookies } = useCookies();
+          if(cookies.get('username') != '') {
+            await leaderboard.set_leaderboard(cookies.get('username'),this.stats.points);
+          }
         }
       }
+      
       return;
     },
     copyScore() {
@@ -147,8 +151,14 @@ export default {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+    height: 100%;
   }
-
+  .date {
+    margin: auto;
+    bottom: 95%;
+    text-align: center;
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
+  }
   .center{
     text-align: center;
   }

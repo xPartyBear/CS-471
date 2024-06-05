@@ -12,18 +12,18 @@ import BannerLogoImg from './../assets/banner2.png'
         <SideBar imgSrc="../../public/bars.png" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
                 <MenuLink icon="../../public/search-alt.png"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
-                <MenuLink icon="../../public/calendar-alt.png"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
-                <MenuLink icon="../../public/award.png"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
-                <MenuLink icon="../../public/smile.png"><RouterLink class="link" to="/accounts">Accounts</RouterLink></MenuLink>
+                <MenuLink icon="../../public/calendar-alt.png" v-if="isSignedIn"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
+                <MenuLink icon="../../public/award.png" v-if="isSignedIn"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
+                <MenuLink icon="../../public/smile.png"  v-if="isSignedIn"><RouterLink class="link" to="/accounts">My Account</RouterLink></MenuLink>
                 <MenuLink icon="../src/assets/info-circle.png"><RouterLink class="link" to="/about">About The Team</RouterLink></MenuLink>
-                <menuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</menuLink>
+                <MenuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</MenuLink>
                 <MenuLink icon="../../public/signin.png" v-if="!isSignedIn" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
             </div>
         </SideBar>
         <!--Banner Title-->
-        <img :src="BannerLogoImg" style="width: 70px">
+        <router-link to="/"><img :src="BannerLogoImg" style="width: 70px"></router-link>
         <img :src="BannerTextImg" style="width: 300px; position:absolute; left:45%">
     </div>
 </template>
@@ -68,7 +68,7 @@ import BannerLogoImg from './../assets/banner2.png'
                 if(username_value != null){
                     return username_value;
                 }
-                return 'nobody'
+                return ''
             },
        }
     }

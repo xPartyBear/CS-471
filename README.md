@@ -19,7 +19,7 @@ make sure you are in the frontend directory
 ### How to set up the backend
 Link to Python [venv](https://docs.python.org/3/library/venv.html) docs
 
-NOTE: Make sure you are in the backend directory
+NOTE: Make sure you are in the backend directory 
 1. Make sure you have Python installed
 2. Run ```python -m venv /venv```
 3. run ```venv\Scripts\activate```

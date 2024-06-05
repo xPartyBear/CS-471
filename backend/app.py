@@ -8,12 +8,47 @@ import accounts
 import requests as r
 from flask import jsonify
 
+import time
+
+import os
+import json
+
 app = Flask(__name__)
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-complete_pokedex = [i['name'] for i in r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']]
+def get_img(name):
+    print(f'''finding pokedex image for {name}''')
+    data = pypokedex.get(name=name)
+    return '' if data.sprites[0]['default'] == None else data.sprites[0]['default']
 
+complete_pokedex = []
+dex_path = './dex_data.json'
+if not os.path.exists(dex_path):
+    json_data = r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']
+    restart = 0
+    while(restart < len(json_data)):
+        for i in range(restart,len(json_data)):
+            try:
+                complete_pokedex.append({"name": json_data[i]['name'], "imgSrc":get_img(json_data[i]['name'])})
+            except:
+                print(f'''pypokedex stalled on {json_data[i]['name']} pokedex image''')
+                time.sleep(1)
+                restart = i
+                break
+        if(i >= len(json_data)-1):
+            restart = i + 1
+            break
+    # complete_pokedex = [{"name": i['name'], "imgSrc":get_img(i['name'])} for i in json_data]
+    f = open(dex_path, 'w+')
+    f.write(json.dumps(complete_pokedex))
+    f.close()
+else: 
+    f = open(dex_path, 'r')
+    complete_pokedex = json.loads(f.read())
+    f.close()
+
+print('pokedex loading complete!')
 
 @app.route("/")
 def hello_world():
@@ -36,28 +71,37 @@ def get_leaderboard(leaderboard_type, limit=10):
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
     cur.execute(f'''SELECT * FROM {constants.USER_STAT_TABLE};''')
-
     res = cur.fetchall()
+
+    cur.execute(f'''SELECT * FROM {constants.USER_STAT_TABLE} WHERE last_game_played=CURRENT_DATE;''')
+    resDaily = cur.fetchall()
+
+    cur.execute(f'''SELECT id, username FROM public.{constants.USER_TABLE}''')
+    idData=cur.fetchall()
 
     cur.close()
     db.close()
+    
+    idToUsername = {i[0]: i[1] for i in idData}
 
     scores = {}
     leaderboard = []
 
     if leaderboard_type == "daily":
-        for user in res:
-            scores[user[0]] = int(user[4])  # Daily score
+        for user in resDaily:
+            scores[idToUsername[user[0]]] = int(user[4])  # Daily score
+        #daily score needs to be checked if that last played was updated
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     elif leaderboard_type == "lifetime":
         for user in res:
-            scores[user[0]] = int(user[5])  # Lifetime score
+            scores[idToUsername[user[0]]] = int(user[5])  # Lifetime score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
+    
     return jsonify(leaderboard[:limit])
 
 
-@app.route("/set_leaderboard/<username>/<score>")
+@app.route("/set_leaderboard/<username>/<score>", methods=['POST'])
 def set_leaderboard(username, score):
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
@@ -85,12 +129,13 @@ def set_leaderboard(username, score):
             f'''UPDATE "{constants.USER_STAT_TABLE}" 
             SET daily_score = {score}, 
             lifetime_score = {str(last_score + int(score))}
+            last_game_played = CURRENT_DATE
             WHERE id = {account[0]};''')
         db.commit()
     else:
         cur.execute(
-            f'''INSERT INTO "{constants.USER_STAT_TABLE}" (id, daily_score, lifetime_score) 
-            VALUES ({account[0]}, %s, %s);''',
+            f'''INSERT INTO "{constants.USER_STAT_TABLE}" (id, daily_score, lifetime_score, last_game_played) 
+            VALUES ({account[0]}, %s, %s, CURRENT_DATE);''',
             (score, str(last_score + int(score)),))
         db.commit()
 
@@ -144,6 +189,7 @@ def get_pokemon():
     return finalRes
 
 
+
 @app.route("/filter_mons", methods=['POST'])
 def filter_dex():
     data = request.get_json()
@@ -151,9 +197,8 @@ def filter_dex():
     if (f == ''):
         return {'result': []}
     # need to manually get all the pokemon informtion using this command
-    filtered = list(filter(lambda i: f.lower() in i.lower(), complete_pokedex))
-    res = [{'name': i, 'imgSrc': pypokedex.get(name=i).sprites} for i in filtered]
-    return {'result': res}
+    filtered = list(filter(lambda i: f.lower() in i['name'].lower(), complete_pokedex))
+    return {'result': filtered}
 
 
 @app.route("/get_info", methods=['POST'])

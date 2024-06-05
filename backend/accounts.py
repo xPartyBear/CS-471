@@ -23,6 +23,8 @@ def login(request):
     print (account)
     cur.close()
     db.close()
+    if(account == None):
+        return jsonify(res="Failed", data="No account found.")
     try:
         verify_pass = argon2.PasswordHasher().verify(hash=account[2], password=password)
     except argon2.exceptions.VerifyMismatchError as e:
