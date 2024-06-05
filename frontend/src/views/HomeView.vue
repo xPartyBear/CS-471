@@ -3,6 +3,8 @@
   import PopupBox from '../components/PopupBox.vue';
   import PokedexEntry from '../components/PokedexEntry.vue';
   import pokemon from '../../services/pokemon.js';
+  import leaderboard from '../../services/leaderboard.js';
+  import {useCookies} from 'vue3-cookies';
 </script>
 
 <template>
@@ -76,6 +78,10 @@ export default {
         console.log(todaysPokemon);
         this.todaysPokemon = todaysPokemon.data.name;
         this.todaysPokeImg = todaysPokemon.data.imgSrc;
+        const { cookies } = useCookies();
+        if(cookies.get('username') != '') {
+          await leaderboard.set_leaderboard(cookies.get('username'),this.stats.points);
+        }
       }
       else{
         this.modifyScore(50);
@@ -86,8 +92,13 @@ export default {
           this.todaysPokemon = todaysPokemon.data.name;
           this.todaysPokeImg = todaysPokemon.data.imgSrc;
           this.toggleShare();
+          const { cookies } = useCookies();
+          if(cookies.get('username') != '') {
+            await leaderboard.set_leaderboard(cookies.get('username'),this.stats.points);
+          }
         }
       }
+      
       return;
     },
     copyScore() {

@@ -71,28 +71,37 @@ def get_leaderboard(leaderboard_type, limit=10):
                           port=constants.DATABASE_PORT)
     cur = db.cursor()
     cur.execute(f'''SELECT * FROM {constants.USER_STAT_TABLE};''')
-
     res = cur.fetchall()
+
+    cur.execute(f'''SELECT * FROM {constants.USER_STAT_TABLE} WHERE last_game_played=CURRENT_DATE;''')
+    resDaily = cur.fetchall()
+
+    cur.execute(f'''SELECT id, username FROM public.{constants.USER_TABLE}''')
+    idData=cur.fetchall()
 
     cur.close()
     db.close()
+    
+    idToUsername = {i[0]: i[1] for i in idData}
 
     scores = {}
     leaderboard = []
 
     if leaderboard_type == "daily":
-        for user in res:
-            scores[user[0]] = int(user[4])  # Daily score
+        for user in resDaily:
+            scores[idToUsername[user[0]]] = int(user[4])  # Daily score
+        #daily score needs to be checked if that last played was updated
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     elif leaderboard_type == "lifetime":
         for user in res:
-            scores[user[0]] = int(user[5])  # Lifetime score
+            scores[idToUsername[user[0]]] = int(user[5])  # Lifetime score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
+    
     return jsonify(leaderboard[:limit])
 
 
-@app.route("/set_leaderboard/<username>/<score>")
+@app.route("/set_leaderboard/<username>/<score>", methods=['POST'])
 def set_leaderboard(username, score):
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
@@ -120,12 +129,13 @@ def set_leaderboard(username, score):
             f'''UPDATE "{constants.USER_STAT_TABLE}" 
             SET daily_score = {score}, 
             lifetime_score = {str(last_score + int(score))}
+            last_game_played = CURRENT_DATE
             WHERE id = {account[0]};''')
         db.commit()
     else:
         cur.execute(
-            f'''INSERT INTO "{constants.USER_STAT_TABLE}" (id, daily_score, lifetime_score) 
-            VALUES ({account[0]}, %s, %s);''',
+            f'''INSERT INTO "{constants.USER_STAT_TABLE}" (id, daily_score, lifetime_score, last_game_played) 
+            VALUES ({account[0]}, %s, %s, CURRENT_DATE);''',
             (score, str(last_score + int(score)),))
         db.commit()
 
