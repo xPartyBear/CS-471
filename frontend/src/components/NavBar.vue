@@ -23,7 +23,7 @@ import BannerLogoImg from './../assets/banner2.png'
             </div>
         </SideBar>
         <!--Banner Title-->
-        <img :src="BannerLogoImg" style="width: 70px">
+        <router-link to="/"><img :src="BannerLogoImg" style="width: 70px"></router-link>
         <img :src="BannerTextImg" style="width: 300px; position:absolute; left:45%">
     </div>
 </template>
