@@ -2,6 +2,7 @@ FROM python:3.9-slim
 LABEL authors="Michael"
 
 RUN apt-get -q -y update
+RUN apt-get -q -y install nano vim
 
 ENV USERNAME=backend
 ENV WORKING_DIR=/home/backend
