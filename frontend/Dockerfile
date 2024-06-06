@@ -4,6 +4,8 @@ LABEL authors="Michael"
 # install simple http server for serving static content
 RUN npm install -g http-server
 
+RUN npm i -g vue@latest
+
 RUN apk --no-cache add curl
 
 # make the 'app' folder the current working directory
@@ -21,4 +23,4 @@ COPY . .
 # build app for production with minification
 RUN npm run build
 
-CMD [ "http-server", "dist" ]
+CMD [ "npm", "run", "dev" ]
