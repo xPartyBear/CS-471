@@ -9,15 +9,15 @@ import BannerLogoImg from './../assets/banner2.png'
 
 <template>
     <div class="header">
-        <SideBar imgSrc="../../public/bars.png" :title="'Welcome, '+getName+ '!'">
+        <SideBar imgSrc="../../bars.png" :title="'Welcome, '+getName+ '!'">
             <div class="pageLink">
-                <MenuLink icon="../../public/search-alt.png"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
-                <MenuLink icon="../../public/calendar-alt.png" v-if="isSignedIn"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
-                <MenuLink icon="../../public/award.png" v-if="isSignedIn"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
-                <MenuLink icon="../../public/smile.png"  v-if="isSignedIn"><RouterLink class="link" to="/accounts">My Account</RouterLink></MenuLink>
+                <MenuLink icon="../../search-alt.png"><RouterLink class="link" to="/">Today's Puzzle</RouterLink></MenuLink>
+                <MenuLink icon="../../calendar-alt.png" v-if="isSignedIn"><RouterLink class="link" to="/past-puzzles">Past Puzzles</RouterLink></MenuLink>
+                <MenuLink icon="../../award.png" v-if="isSignedIn"><RouterLink class="link" to="/leaderboards">Leaderboards</RouterLink></MenuLink>
+                <MenuLink icon="../../smile.png"  v-if="isSignedIn"><RouterLink class="link" to="/accounts">My Account</RouterLink></MenuLink>
                 <MenuLink icon="../src/assets/info-circle.png"><RouterLink class="link" to="/about">About The Team</RouterLink></MenuLink>
-                <MenuLink icon="../../public/signin.png" v-if="isSignedIn" @click="logout()">Log Out</MenuLink>
-                <MenuLink icon="../../public/signin.png" v-if="!isSignedIn" @click="displaySignUp()">
+                <MenuLink icon="../../signin.png" v-if="isSignedIn" @click="logout()">Log Out</MenuLink>
+                <MenuLink icon="../../signin.png" v-if="!isSignedIn" @click="displaySignUp()">
                     <p class="link">Sign Up / Sign In</p>
                 </MenuLink>
             </div>
