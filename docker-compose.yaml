@@ -31,7 +31,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.cs471.entrypoints=https
-      - traefik.http.routers.cs471.rule=Host(`michaeldekoski.com`) && PathPrefix(`/cs471`)
+      - traefik.http.routers.cs471.rule=Host(`dailypoke.michaeldekoski.com`)
       - traefik.http.routers.cs471.tls=true
       - traefik.http.routers.cs471.tls.certresolver=dns-cloudflare
 
