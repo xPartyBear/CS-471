@@ -15,7 +15,7 @@ import json
 
 app = Flask(__name__)
 
-CORS(app, origins=['http://frontend:8080'], supports_credentials=True)
+CORS(app, origins=['https://dailypoke.michaeldekoski.com'], supports_credentials=True)
 
 def get_img(name):
     print(f'''finding pokedex image for {name}''')
