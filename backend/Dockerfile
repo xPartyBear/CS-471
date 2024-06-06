@@ -10,6 +10,7 @@ ENV WORKING_DIR=/home/backend
 WORKDIR ${WORKING_DIR}
 
 COPY requirements.txt .
+COPY dex_data.json .
 COPY *.py .
 
 RUN groupadd ${USERNAME} && \

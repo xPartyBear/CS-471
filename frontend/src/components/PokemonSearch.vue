@@ -39,7 +39,7 @@ import pokemon from '../../services/pokemon.js'
                 isSearching: false,
                 isRequesting: false,
                 searchedPokemon: '',
-                options: [{name: 'Search', imgSrc:[{default:''}]}]
+                options: [{name: 'Search', imgSrc:[{default:'../../search-alt.png'}]}]
             }
         },
 
@@ -79,7 +79,7 @@ import pokemon from '../../services/pokemon.js'
                 let res = await pokemon.filter_mons(this.searchedPokemon.toLowerCase());
                 //console.log(res.data);
                 if(res.data.result.length <= 0 || res.data.result[0] == ''){
-                    this.options = [{name: 'Search', imgSrc:[{default:''}]}]
+                    this.options = [{name: 'Search', imgSrc:[{default:'../../search-alt.png'}]}]
                 }
                 this.isRequesting = false;
                 //console.log(res.data.result);

@@ -21,38 +21,41 @@ CORS(app, origins=['https://dailypoke.michaeldekoski.com',
                    'http://frontend:8080'],
      supports_credentials=True)
 
+
 def get_img(name):
     print(f'''finding pokedex image for {name}''')
     data = pypokedex.get(name=name)
     return '' if data.sprites[0]['default'] == None else data.sprites[0]['default']
+
 
 complete_pokedex = []
 dex_path = './dex_data.json'
 if not os.path.exists(dex_path):
     json_data = r.get('https://pokeapi.co/api/v2/pokemon?limit=100000').json()['results']
     restart = 0
-    while(restart < len(json_data)):
-        for i in range(restart,len(json_data)):
+    while (restart < len(json_data)):
+        for i in range(restart, len(json_data)):
             try:
-                complete_pokedex.append({"name": json_data[i]['name'], "imgSrc":get_img(json_data[i]['name'])})
+                complete_pokedex.append({"name": json_data[i]['name'], "imgSrc": get_img(json_data[i]['name'])})
             except:
                 print(f'''pypokedex stalled on {json_data[i]['name']} pokedex image''')
                 time.sleep(1)
                 restart = i
                 break
-        if(i >= len(json_data)-1):
+        if (i >= len(json_data) - 1):
             restart = i + 1
             break
     # complete_pokedex = [{"name": i['name'], "imgSrc":get_img(i['name'])} for i in json_data]
     f = open(dex_path, 'w+')
     f.write(json.dumps(complete_pokedex))
     f.close()
-else: 
+else:
     f = open(dex_path, 'r')
     complete_pokedex = json.loads(f.read())
     f.close()
 
 print('pokedex loading complete!')
+
 
 @app.route("/")
 def hello_world():
@@ -81,27 +84,26 @@ def get_leaderboard(leaderboard_type, limit=10):
     resDaily = cur.fetchall()
 
     cur.execute(f'''SELECT id, username FROM public.{constants.USER_TABLE}''')
-    idData=cur.fetchall()
+    idData = cur.fetchall()
 
     cur.close()
     db.close()
-    
+
     idToUsername = {i[0]: i[1] for i in idData}
 
     scores = {}
     leaderboard = []
 
-    if leaderboard_type == "daily":
+    if str(leaderboard_type).lower() == "daily":
         for user in resDaily:
             scores[idToUsername[user[0]]] = int(user[4])  # Daily score
         #daily score needs to be checked if that last played was updated
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    elif leaderboard_type == "lifetime":
+    elif str(leaderboard_type).lower() == "lifetime":
         for user in res:
             scores[idToUsername[user[0]]] = int(user[5])  # Lifetime score
         leaderboard = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
-    
     return jsonify(leaderboard[:limit])
 
 
@@ -193,7 +195,6 @@ def get_pokemon():
     return finalRes
 
 
-
 @app.route("/filter_mons", methods=['POST'])
 def filter_dex():
     data = request.get_json()
@@ -257,8 +258,8 @@ def guess_pokemon():
     return {"res": (not res == None)}
 
 
-@app.route("/get_db", methods=['GET'])
-def get_db():
+@app.route("/get_puzzles", methods=['POST'])
+def get_puzzles():
     # Connect to postgres DB
     db = psycopg2.connect(dbname=constants.DATABASE_NAME,
                           user=constants.DATABASE_USER,
@@ -268,15 +269,17 @@ def get_db():
     cur = db.cursor()
 
     # Select all products from the table
-    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE}''')
+    cur.execute(f'''SELECT * FROM {constants.PUZZLE_TABLE} WHERE game_date < CURRENT_DATE''')
 
     # Fetch the data
     data = cur.fetchall()
 
+    print(data)
+
     # close the cursor and connection
     cur.close()
     db.close()
-    return data
+    return jsonify(data)
 
 
 @app.route("/login", methods=['POST'])

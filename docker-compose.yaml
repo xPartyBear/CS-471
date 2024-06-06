@@ -7,14 +7,12 @@ services:
       - db
     image: xpartybear/cs471-backend:latest
     ports:
-      - "5000:5000"
+      - 5000:5000
     env_file:
       - .backend_env
     networks:
       - default
       - db
-    volumes:
-      - cs471-backend:/home/backend
     labels:
       - traefik.enable=false
 
@@ -24,12 +22,12 @@ services:
       - backend
     image: xpartybear/cs471-frontend:latest
     ports:
-      - "5173:8080"
+      - 4173:4173
+    env_file:
+      - .frontend_env
     networks:
       - default
       - proxy
-    volumes:
-      - cs471-frontend:/app
     labels:
       - traefik.enable=true
       - traefik.http.routers.cs471.entrypoints=https
@@ -44,7 +42,7 @@ services:
     env_file:
       - .database_env
     ports:
-      - "5432:5432"
+      - 5432:5432
     networks:
       - db
     volumes:
@@ -54,8 +52,6 @@ services:
 
 volumes:
   cs471-db:
-  cs471-backend:
-  cs471-frontend:
 
 networks:
   proxy:

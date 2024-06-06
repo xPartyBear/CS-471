@@ -18,7 +18,7 @@ import FilteredLeaderboard from "../components/FilteredLeaderboard.vue";
 
 
         <div class="content" v-if="leaderboardType==1">
-            <FilteredLeaderboard category="daily"></FilteredLeaderboard>
+            <FilteredLeaderboard category="Daily"></FilteredLeaderboard>
         </div>
         <!--
         <div class="content" v-if="leaderboardType==2">
@@ -43,10 +43,10 @@ import FilteredLeaderboard from "../components/FilteredLeaderboard.vue";
         </div>
         -->
         <div class="content" v-if="leaderboardType==4">
-            <FilteredLeaderboard category="lifetime"></FilteredLeaderboard>
+            <FilteredLeaderboard category="Lifetime"></FilteredLeaderboard>
         </div>
         <div class="content" v-if="leaderboardType==5">
-            <FilteredLeaderboard category="streaks"></FilteredLeaderboard>
+            <FilteredLeaderboard category="Streaks"></FilteredLeaderboard>
         </div>
     </div>
 </template>
