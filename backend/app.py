@@ -134,7 +134,7 @@ def set_leaderboard(username, score):
         cur.execute(
             f'''UPDATE "{constants.USER_STAT_TABLE}" 
             SET daily_score = {score}, 
-            lifetime_score = {str(last_score + int(score))}
+            lifetime_score = {str(last_score + int(score))},
             last_game_played = CURRENT_DATE
             WHERE id = {account[0]};''')
         db.commit()
