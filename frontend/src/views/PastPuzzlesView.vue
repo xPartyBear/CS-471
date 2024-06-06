@@ -1,5 +1,5 @@
 <script setup>
-import pokemon from '../../services/pokemon.js'
+import pastPuzzles from '../../services/pastPuzzles.js'
 </script>
 
 <template>
@@ -13,29 +13,25 @@ import pokemon from '../../services/pokemon.js'
 
 <script>
     export default {
-        data(){
-            return {
-                puzzles: []
-            }
-        },
-        mounted(){
-            const earliest = new Date(2024,4,30);
-            let curDate = new Date();
-            console.log(curDate + "\n" + earliest);
-            while(curDate.getTime() >= earliest.getTime()){
-                this.puzzles.push(
-                    {
-                        year: curDate.getFullYear(),
-                        month: curDate.getMonth() + 1,
-                        day: curDate.getDate(),
-                        date: `${curDate.getMonth()+1}-${curDate.getDate()}-${curDate.getFullYear()}`
-                    }
-                );
-                curDate.setDate(curDate.getDate()-1);
-            }
+      data() {
+        return {
+          puzzles: []
         }
-
-    }   
+      },
+      mounted() {
+        pastPuzzles.get_PastPuzzles().then(data => {
+          data.data.forEach(puzzle => {
+            const date = new Date(Date.parse(puzzle[0]));
+            this.puzzles.push({
+              year: date.getFullYear(),
+              month: date.getMonth() + 1,
+              day: date.getDate() + 1,
+              date: `${date.getMonth() + 1}-${date.getDate() + 1}-${date.getFullYear()}`
+            });
+          });
+        });
+      }
+    }
 </script>
 
 
