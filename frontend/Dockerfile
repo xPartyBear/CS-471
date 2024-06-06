@@ -23,4 +23,4 @@ COPY . .
 # build app for production with minification
 RUN npm run build
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "http-server", "dist" ]
